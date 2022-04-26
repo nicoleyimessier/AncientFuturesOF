@@ -25,6 +25,9 @@ void AppManager::setup()
     }
 
     pMan.setup();
+
+
+    ofAddListener( ofEvents().keyPressed, this, &AppManager::onKeyPressed );
 }
 
 void AppManager::update( float dt )
@@ -48,7 +51,7 @@ void AppManager::update( float dt )
         if( elapsedTime > animationTime )
             setAppState( AppStates::STOPPING );
     }
-    if( mAppState == AppStates::STOPPING && ( ofGetElapsedTimef() - startTyTimer )> tyTimeDur ) {
+    if( mAppState == AppStates::STOPPING && ( ofGetElapsedTimef() - startTyTimer ) > tyTimeDur ) {
         setAppState( AppStates::IDLE );
     }
 }
@@ -58,7 +61,7 @@ void AppManager::draw()
     pMan.draw();
     recorder.drawAudio();
 
-    if( configs().one().appDebug ) {
+    if( configs().one().mAppDebug ) {
 
         if( useArduino )
             arduino.drawDebug();
@@ -133,7 +136,7 @@ void AppManager::setAppState( AppStates state )
             arduino.sendStopMsg();
 
         pMan.setPage( Pages::CLOSE_OUT );
-        startTyTimer = ofGetElapsedTimef(); 
+        startTyTimer = ofGetElapsedTimef();
         break;
     }
     default:
@@ -172,6 +175,23 @@ string AppManager::getAppStateString()
         return "ANIMATING";
     case AppStates::STOPPING:
         return "STOPPING";
+    default:
+        break;
+    }
+}
+
+void AppManager::onKeyPressed( ofKeyEventArgs &e )
+{
+    switch( e.key ) {
+    case '1':
+        arduino.sendSerialMsg( 1.0f, 0.0f );
+        break;
+    case '2':
+        arduino.sendSerialMsg( 0.0f, 1.0f );
+        break;
+    case '3':
+        arduino.sendStopMsg(); 
+        break; 
     default:
         break;
     }

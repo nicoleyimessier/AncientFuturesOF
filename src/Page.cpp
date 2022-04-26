@@ -95,7 +95,7 @@ void Page::drawCountdown()
 
 void Page::drawTimer() 
 {
-    fonts().NunitoSansBold.draw( mTimer, mRegTextSize, artistPos.x, ofGetHeight() * 0.85);
+    fonts().NunitoSansBold.draw( mTimer, mRegTextSize, artistPos.x, ofGetHeight() * 0.87);
 }
 
 void Page::drawTemplate()

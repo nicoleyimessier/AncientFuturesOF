@@ -14,10 +14,10 @@ void Arduino::setup()
     serial.listDevices();
     vector<ofSerialDeviceInfo> deviceList = serial.getDeviceList();
 
-    cout << deviceList[0].getDeviceName();
+    //cout << deviceList[0].getDeviceName();
     int baud = 9600;
-    serial.setup( 0, baud ); // open the first device
-    // serial.setup("COM4", baud); // windows example
+    //serial.setup( 0, baud ); // open the first device
+     serial.setup("COM3", baud); // windows example
     // serial.setup("/dev/tty.usbserial-A4001JEC", baud); // mac osx example
     // serial.setup("/dev/ttyUSB0", baud); //linux example
 

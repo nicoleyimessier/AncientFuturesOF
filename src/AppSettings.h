@@ -21,11 +21,7 @@ class AppSettings final {
 
     // --- APP SETTINGS --- //
     bool getLogToFile() const { return mLogToFile; }
-
-
-    // --- FLAGS --- //
-    bool mLogToFile{ true };
-    bool appDebug{ false }; // global debug state for application
+    bool getUseMouse() const { return mUseMouse; }
 
     // --- COLORS --- //
     ofColor bgColor = ofColor( 117, 95, 134 );
@@ -33,9 +29,19 @@ class AppSettings final {
     ofColor gridDark{ ofColor( 124, 65, 91, 255 * .6 ) };
     ofColor gridLight{ ofColor( 173, 129, 177, 255 * .7 ) };
 
+    // --- Changable flags --- //
+    bool mAppDebug{ false }; // global debug state for application
+
+  private:
+    // --- FLAGS --- //
+    bool mLogToFile{ true };
+    bool mUseMouse{ false };
 
     // --- CLASS SPECIFIC --- //
     string mAppSettingsFile = "settings/AppSettings.json";
 };
 
-static AppSettings &configs() { return AppSettings::one(); }
+static AppSettings &configs()
+{
+    return AppSettings::one();
+}

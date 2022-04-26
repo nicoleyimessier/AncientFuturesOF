@@ -27,6 +27,10 @@ class AppManager {
     string getAppStateString(); 
 
   private:
+
+    // Functions
+    void onKeyPressed( ofKeyEventArgs &e );
+    
     // App states
     AppStates mAppState{ AppStates::IDLE };
 

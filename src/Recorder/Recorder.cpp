@@ -142,7 +142,7 @@ void Recorder::drawAudio()
     ofSetLineWidth( 5 );
     ofBeginShape();
     for( unsigned int i = 0; i < inputFrames.size(); i++ ) {
-        float y = 100 - inputFrames[i] * 180.0f;
+        float y = 100 - inputFrames[i] * 580.0f;
         //ofVertex( i, y );
         ofVertex( i * 2, y ); 
         // ofVertex(i*2, 100);
