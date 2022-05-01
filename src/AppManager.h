@@ -42,7 +42,7 @@ class AppManager {
 
     // Arduino + Serial Comms
     Arduino arduino;
-    bool useArduino{ false }; 
+    bool useArduino{ true }; 
 
     // Animation timer
     float startAnimationTime{ 0.0f };

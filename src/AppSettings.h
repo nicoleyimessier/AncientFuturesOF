@@ -35,7 +35,7 @@ class AppSettings final {
   private:
     // --- FLAGS --- //
     bool mLogToFile{ true };
-    bool mUseMouse{ false };
+    bool mUseMouse{ true };
 
     // --- CLASS SPECIFIC --- //
     string mAppSettingsFile = "settings/AppSettings.json";

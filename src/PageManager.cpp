@@ -10,7 +10,7 @@ PageManager::~PageManager()
 
 void PageManager::setup()
 {
-    page.setup(); 
+    page.setup();
 }
 
 void PageManager::update( float dt )
@@ -18,17 +18,21 @@ void PageManager::update( float dt )
     if( mPage == Pages::COUNTDOWN ) {
         timeDiffCd = ofGetElapsedTimef() - startCountdownTime;
 
-        countDownIndex = countdownDur - floor( timeDiffCd ); 
-        page.setCountdown( ofToString( countDownIndex ) ); 
+        countDownIndex = countdownDur - floor( timeDiffCd );
+        page.setCountdown( ofToString( countDownIndex ) );
     }
     else if( mPage == Pages::LISTENING ) {
         timeDiffTimer = ofGetElapsedTimef() - startTimer;
 
         timerIndex = timerDur - floor( timeDiffTimer );
-        if( timerIndex > 10 )
-            page.setTimer( "00:" + ofToString( timerIndex ) );
-        else
-            page.setTimer( "00:0" + ofToString( timerIndex ) );
+        if( timerIndex > 10 ) {
+            page.setCountdown( "00:" + ofToString( timerIndex ) );
+            // page.setTimer( "00:" + ofToString( timerIndex ) );
+        }
+        else {
+            page.setCountdown( "00:0" + ofToString( timerIndex ) );
+            // page.setTimer( "00:0" + ofToString( timerIndex ) );
+        }
     }
 }
 
@@ -39,15 +43,16 @@ void PageManager::draw()
 
     switch( mPage ) {
     case Pages::INTRO: {
-        page.drawDescription(); 
+        page.drawDescription();
+        page.drawPrompt();
         break;
     }
     case Pages::COUNTDOWN:
-        page.drawCountdown(); 
+        page.drawCountdown();
         break;
     case Pages::LISTENING:
         page.drawCountdown();
-        page.drawTimer(); 
+        page.drawTimer();
         break;
     case Pages::PROCESSING:
         page.drawCountdown();
@@ -70,7 +75,7 @@ void PageManager::setPage( Pages _page )
     switch( mPage ) {
     case Pages::INTRO:
         countDownIndex = 3;
-        timerIndex = 20; 
+        timerIndex = 20;
         break;
     case Pages::COUNTDOWN: {
         startCountdownTime = ofGetElapsedTimef();
@@ -78,18 +83,19 @@ void PageManager::setPage( Pages _page )
     }
     case Pages::LISTENING:
         countDownIndex = 3;
-        page.setCountdown( "..." ); 
-        startTimer = ofGetElapsedTimef(); 
+        // page.setCountdown( "..." );
+        page.setTimer( "" ); 
+        startTimer = ofGetElapsedTimef();
         break;
     case Pages::PROCESSING:
-        timerIndex = 20; 
-        page.setCountdown( "PROCESSING" ); 
+        timerIndex = 20;
+        page.setCountdown( "Decoding" );
         break;
     case Pages::ANIMATING:
-        page.setCountdown( "ANIMATING" ); 
+        page.setCountdown( "..." );
         break;
     case Pages::CLOSE_OUT:
-        page.setCountdown( "THANK YOU" ); 
+        page.setCountdown( "Sonic secret stored." );
         break;
     default:
         break;

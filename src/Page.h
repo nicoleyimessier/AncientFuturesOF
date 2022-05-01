@@ -15,6 +15,7 @@ class Page {
     void drawTitle(); 
     void drawArtists(); 
     void drawDescription(); 
+    void drawPrompt(); 
     void drawTemplate(); 
     void drawCountdown(); 
     void drawTimer(); 
@@ -40,22 +41,20 @@ class Page {
 
     ////////////  TITLE ///////////////////
     string mTitle{ "" };
-    string mDescription{
-        "INSERT PROJECT DESCRIPTION/PROMPT. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore "
-        "et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo "
-        "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint "
-        "occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
-    };
+    string mDescription{ "Inspired by the textiles that have held humanity’s secrets across time and space, this triple-woven installation is made with soft electronics to collect, store and cumulatively visualize solicited secrets from viewers using sentiment analysis and long term data-textile storage.\n\nThis piece is a prototype iteration where the artists are prototyping their textile sculpture through weaving, engineering, and coding." };
+    string    mPrompt{ "Touch the screen to share your secret as a sonic texture." };
     string    mCountdown{ "3" }; 
     string    mTimer{ "00:20" }; 
 
     glm::vec2 titlePos{ 38.0f, 100.0f }; 
     glm::vec2 artistPos{ 38.0f, 230.0f }; 
     glm::vec2 descriptionPos{ 38.0f, 350.0f }; 
+    glm::vec2 promptPos{ 38.0f, 850.0f }; 
     glm::vec2 countDownPos{ 38.0f, 550.0f }; 
 
     float     mTitleSize{ 100.0f }; 
     float     mRegTextSize{ 30.0f }; 
+    float     mPromptTextSize{ 30.0f }; 
     float     mColWidth{ 368.0f }; 
 
     ofImage bg; 
