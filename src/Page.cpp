@@ -93,6 +93,25 @@ void Page::drawPrompt()
     );
 }
 
+void Page::drawLang()
+{
+    int  numLines;
+    bool wordsWereCropped;
+
+    ofSetColor( configs().textColor );
+    fonts().NunitoSansReg.drawMultiLineColumn(  mLang , // string
+        mLangTextSize,                                             // size
+        langPos.x, langPos.y,                                      // position
+        mColWidth,                                                    // column width
+        numLines,                                                     // get back the number of lines
+        false,                                                        // true would not draw, just get back the rectangle
+        55,                                                           // max number of lines
+        true,              // get the final text formatting (by adding \n's) in the supplied string
+        &wordsWereCropped, // this is set to true if the box was too small to fit all of the text
+        false              // centered
+    );
+}
+
 void Page::drawCountdown()
 {
     int  numLines;

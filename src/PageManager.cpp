@@ -45,6 +45,7 @@ void PageManager::draw()
     case Pages::INTRO: {
         page.drawDescription();
         page.drawPrompt();
+        page.drawLang();
         break;
     }
     case Pages::COUNTDOWN:
@@ -89,13 +90,13 @@ void PageManager::setPage( Pages _page )
         break;
     case Pages::PROCESSING:
         timerIndex = 20;
-        page.setCountdown( "Decoding" );
+        page.setCountdown( "Processing" );
         break;
     case Pages::ANIMATING:
         page.setCountdown( "..." );
         break;
     case Pages::CLOSE_OUT:
-        page.setCountdown( "Sonic secret stored." );
+        page.setCountdown( "Sonic secret stored" );
         break;
     default:
         break;

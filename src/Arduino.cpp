@@ -14,10 +14,10 @@ void Arduino::setup()
     serial.listDevices();
     vector<ofSerialDeviceInfo> deviceList = serial.getDeviceList();
 
-    //cout << deviceList[0].getDeviceName();
+    // cout << deviceList[0].getDeviceName();
     int baud = 9600;
-    //serial.setup( 0, baud ); // open the first device
-     serial.setup("COM3", baud); // windows example
+    // serial.setup( 0, baud ); // open the first device
+    serial.setup( "COM4", baud ); // windows example
     // serial.setup("/dev/tty.usbserial-A4001JEC", baud); // mac osx example
     // serial.setup("/dev/ttyUSB0", baud); //linux example
 
@@ -29,9 +29,15 @@ void Arduino::update()
     if( bSendSerialMessage ) {
 
         // (1) write the letter "a" to serial:
-        ( sendPostiveAnimation ) ? serial.writeByte( 'p' ) : serial.writeByte( 'n' );
-        serial.writeByte( '\n' );
+        if( sendPostiveAnimation )
+            serial.writeByte( 'p' );
+        else if( sendNegativeAnimation )
+            serial.writeByte( 'n' );
+        else if( sendNetrualAnimation )
+            serial.writeByte( 'c' );
 
+        serial.writeByte( '\n' );
+        bSendSerialMessage = false;
         // (2) read
         // now we try to read 3 bytes
         // since we might not get them all the time 3 - but sometimes 0, 6, or something else,
@@ -40,6 +46,7 @@ void Arduino::update()
         // or just read three every time. now, we will be sure to
         // read as much as we can in groups of three...
 
+        /*
         nTimesRead = 0;
         nBytesRead = 0;
         int nRead = 0; // a temp variable to keep count per read
@@ -58,12 +65,25 @@ void Arduino::update()
 
         bSendSerialMessage = false;
         readTime = ofGetElapsedTimef();
+        */
     }
-
-    if( sendStopAnimation ) {
+    else if( sendStopAnimation ) {
         serial.writeByte( 's' );
         serial.writeByte( '\n' );
         sendStopAnimation = false;
+        resetAllMsgValues();
+    }
+    else if( sendRecordingFlag ) {
+        serial.writeByte( 'r' );
+        serial.writeByte( '\n' );
+        sendRecordingFlag = false;
+        resetAllMsgValues();
+    }
+    else if( sendAnalyzingFlag ) {
+        serial.writeByte( 'a' );
+        serial.writeByte( '\n' );
+        sendAnalyzingFlag = false;
+        resetAllMsgValues();
     }
 }
 
@@ -84,18 +104,52 @@ void Arduino::drawDebug()
     ofDrawBitmapString( msg, 50, 100 );
 }
 
-void Arduino::sendSerialMsg( float pos, float neg )
+void Arduino::sendSentimentMsg( float pos, float neg, float netrual )
 {
-    if( pos > neg )
-        sendPostiveAnimation = true;
-    else if( neg > pos )
-        sendPostiveAnimation = false;
 
-    ofLogNotice() << "Send positive animation: " << sendPostiveAnimation;
+    if( pos > neg ) {
+        if( pos > netrual ) {
+            sendPostiveAnimation = true;
+            ofLogNotice() << "Send positive animation: " << sendPostiveAnimation;
+        }
+        else {
+            sendNetrualAnimation = true;
+            ofLogNotice() << "Send netrual animation: " << sendNetrualAnimation;
+        }
+    }
+    else if( neg > netrual ) {
+        sendNegativeAnimation = true;
+        ofLogNotice() << "Send negative animation: " << sendNegativeAnimation;
+    }
+    else {
+        sendNetrualAnimation = true;
+        ofLogNotice() << "Send netrual animation: " << sendNetrualAnimation;
+    }
+
+
     bSendSerialMessage = true;
+}
+
+void Arduino::sendRecording()
+{
+    sendRecordingFlag = true;
+}
+
+void Arduino::sendAnalyzing()
+{
+    sendAnalyzingFlag = true;
 }
 
 void Arduino::sendStopMsg()
 {
     sendStopAnimation = true;
+}
+
+void Arduino::resetAllMsgValues()
+{
+    sendRecordingFlag = false;
+    sendAnalyzingFlag = false;
+    sendPostiveAnimation = false;
+    sendNegativeAnimation = false;
+    sendNetrualAnimation = false;
 }

@@ -11,8 +11,11 @@ class Arduino {
     void drawDebug();
 
     // Communcations
-    void sendSerialMsg( float pos, float neg );
-    void sendStopMsg(); 
+    void sendSentimentMsg( float pos, float neg, float netrual );
+    void sendRecording();
+    void sendAnalyzing();
+    void sendStopMsg();
+    void resetAllMsgValues();
 
   private:
     bool  bSendSerialMessage{ false }; // a flag for sending serial
@@ -26,5 +29,9 @@ class Arduino {
 
     // NEED TO DO: make into enum state machine
     bool sendPostiveAnimation{ false };
+    bool sendNegativeAnimation{ false };
+    bool sendNetrualAnimation{ false };
+    bool sendRecordingFlag{ false };
+    bool sendAnalyzingFlag{ false };
     bool sendStopAnimation{ true };
 };

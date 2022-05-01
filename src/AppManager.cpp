@@ -85,6 +85,8 @@ void AppManager::setAppState( AppStates state )
     case AppStates::COUNTDOWN: {
         pMan.setPage( Pages::COUNTDOWN );
 
+          if( useArduino )
+            arduino.sendRecording(); 
         break;
     }
     case AppStates::RECORDING: {
@@ -95,6 +97,10 @@ void AppManager::setAppState( AppStates state )
     case AppStates::PROCESSING: {
         pMan.setPage( Pages::PROCESSING );
         recorder.stop();
+
+        
+        if( useArduino )
+            arduino.sendAnalyzing(); 
         break;
     }
     case AppStates::ANIMATING: {
@@ -102,6 +108,7 @@ void AppManager::setAppState( AppStates state )
 
         float pos = 0.0f;
         float neg = 0.0f;
+        float neu = 0.0f; 
 
         // open json file
         if( ofFile::doesFileExist( recorder.getSentimentPath() ) ) {
@@ -116,6 +123,9 @@ void AppManager::setAppState( AppStates state )
 
                 if( !json["pos"].is_null() )
                     pos = json["pos"];
+
+                if( !json["neu"].is_null() )
+                    neu = json["neu"];
             }
             catch( exception &exc ) {
                 ofLogError() << "Unable to load json file";
@@ -126,7 +136,7 @@ void AppManager::setAppState( AppStates state )
         }
 
         if( useArduino )
-            arduino.sendSerialMsg( pos, neg );
+            arduino.sendSentimentMsg( pos, neg, neu );
 
         startAnimationTime = ofGetElapsedTimef();
         break;
@@ -184,12 +194,21 @@ void AppManager::onKeyPressed( ofKeyEventArgs &e )
 {
     switch( e.key ) {
     case '1':
-        arduino.sendSerialMsg( 1.0f, 0.0f );
+        arduino.sendRecording(); 
         break;
     case '2':
-        arduino.sendSerialMsg( 0.0f, 1.0f );
+        arduino.sendAnalyzing(); 
         break;
     case '3':
+        arduino.sendSentimentMsg( 1.0f, 0.0f, 0.0f );
+        break;
+    case '4':
+        arduino.sendSentimentMsg( 0.0f, 1.0f, 0.0f );
+        break;
+    case '5':
+        arduino.sendSentimentMsg( 0.0f, 0.0f, 1.0f );
+        break;
+    case '6':
         arduino.sendStopMsg(); 
         break; 
     default:
