@@ -350,5 +350,5 @@ bool Recorder::getIsDoneProcessing()
 
 int Recorder::getMappedVolume()
 {
-    return (int)ofMap( mSmoothedVol, 0.0, 0.05, 100.0, 255.0, true );
+    return (int)ofMap( mSmoothedVol, 0.0, 0.05, 0.0, 255.0, true );
 }

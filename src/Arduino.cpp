@@ -38,34 +38,6 @@ void Arduino::update()
 
         serial.writeByte( '\n' );
         bSendSerialMessage = false;
-        // (2) read
-        // now we try to read 3 bytes
-        // since we might not get them all the time 3 - but sometimes 0, 6, or something else,
-        // we will try to read three bytes, as much as we can
-        // otherwise, we may have a "lag" if we don't read fast enough
-        // or just read three every time. now, we will be sure to
-        // read as much as we can in groups of three...
-
-        /*
-        nTimesRead = 0;
-        nBytesRead = 0;
-        int nRead = 0; // a temp variable to keep count per read
-
-        unsigned char bytesReturned[3];
-
-        memset( bytesReadString, 0, 4 );
-        memset( bytesReturned, 0, 3 );
-
-        while( ( nRead = serial.readBytes( bytesReturned, 3 ) ) > 0 ) {
-            nTimesRead++;
-            nBytesRead = nRead;
-        };
-
-        memcpy( bytesReadString, bytesReturned, 3 );
-
-        bSendSerialMessage = false;
-        readTime = ofGetElapsedTimef();
-        */
     }
     else if( sendStopAnimation ) {
         serial.writeByte( 's' );
@@ -86,12 +58,52 @@ void Arduino::update()
         resetAllMsgValues();
     }
     else if( sendVolumeFlag ) {
-        serial.writeByte( (char)mVolume );
+        string volume = ofToString( mVolume );
+
+        serial.writeByte( 'v' );
+        
+        for( auto &letter : volume ) {
+            serial.writeByte( (char)letter );
+        }
+        
+
         serial.writeByte( '\n' );
-        ofLogNotice() << "send volume " << mVolume; 
+        // serial.flush();
+        //ofLogNotice() << "send volume " << volume;
         sendVolumeFlag = false;
-        resetAllMsgValues(); 
+        resetAllMsgValues();
+
     }
+
+
+     // (2) read
+    // now we try to read 3 bytes
+    // since we might not get them all the time 4 - but sometimes 0, 6, or something else,
+    // we will try to read three bytes, as much as we can
+    // otherwise, we may have a "lag" if we don't read fast enough
+    // or just read three every time. now, we will be sure to
+    // read as much as we can in groups of three...
+
+    /*
+    nTimesRead = 0;
+    nBytesRead = 0;
+    int nRead = 0; // a temp variable to keep count per read
+
+    unsigned char bytesReturned[4];
+
+    memset( bytesReadString, 0, 5 );
+    memset( bytesReturned, 0, 4 );
+
+    while( ( nRead = serial.readBytes( bytesReturned, 4 ) ) > 0 ) {
+        nTimesRead++;
+        nBytesRead = nRead;
+    };
+
+    memcpy( bytesReadString, bytesReturned, 4 );
+
+    bSendSerialMessage = false;
+    readTime = ofGetElapsedTimef();
+    */
 }
 
 void Arduino::drawDebug()
@@ -108,7 +120,7 @@ void Arduino::drawDebug()
     msg += "nTimes read " + ofToString( nTimesRead ) + "\n";
     msg += "read: " + ofToString( bytesReadString ) + "\n";
     msg += "(at time " + ofToString( readTime, 3 ) + ")";
-    ofDrawBitmapString( msg, 50, 100 );
+    ofDrawBitmapString( msg, ofGetWidth() / 2, 100 );
 }
 
 void Arduino::sendSentimentMsg( float pos, float neg, float netrual )
@@ -152,6 +164,7 @@ void Arduino::sendStopMsg()
     sendStopAnimation = true;
 }
 
+
 void Arduino::resetAllMsgValues()
 {
     sendRecordingFlag = false;
@@ -165,5 +178,5 @@ void Arduino::resetAllMsgValues()
 void Arduino::sendVolumeData( int volume )
 {
     sendVolumeFlag = true;
-    mVolume = volume; 
+    mVolume = volume;
 }

@@ -218,6 +218,9 @@ void AppManager::onKeyPressed( ofKeyEventArgs &e )
     case '6':
         arduino.sendStopMsg(); 
         break; 
+   case '7':
+        arduino.sendVolumeData(1);
+        break; 
     default:
         break;
     }
