@@ -1,8 +1,8 @@
 #pragma once
 
+#include "AppSettings.h"
 #include "ofMain.h"
 #include "ofxFFmpegRecorder.h"
-#include "AppSettings.h"
 
 class Recorder {
   public:
@@ -16,7 +16,7 @@ class Recorder {
     void audioIn( ofSoundBuffer &input );
     void draw( int x, int y, float width, float height );
     void drawDebug();
-    void drawAudio(); 
+    void drawAudio();
     void onExit( ofEventArgs &e );
 
     //! getters
@@ -25,6 +25,7 @@ class Recorder {
     bool   getIsRecordingVideo();
     bool   getIsDoneProcessing();
     string getSentimentPath() { return mVisitorSentimentPath; }
+    int    getMappedVolume();
 
     //! setters
     void setAudioEnabled( bool enable ) { mAudio = enable; }
@@ -49,10 +50,11 @@ class Recorder {
     void                 setAudioState( AudioRecordingStates state );
 
     //! Paths
-    string mRootPath{
-        "C:\\ancient_futures\\of_v0.11.2_vs2017_release\\apps\\myApps\\\AncientFuturesOF\\bin\\"
+    string mRootPath{ //"C:\\ancient_futures\\of_v0.11.2_vs2017_release\\apps\\myApps\\AncientFuturesOF\\bin\\"
+        "C:\\Users\\nicol\\Documents\\code\\openFrameworks\\of_v0.11.2_vs2017_release\\of_v0.11.2_vs2017_"
+        "release\\apps\\myApps\\\AncientFuturesApp\\bin\\"
     };
-    string mRecordingPath{ "" };
+    string mRecordingPath{ "recordings\\" };
     string mVisitorPath{ "" };
     string mVisitorAudioPath{ "" };
     string mVisitorSentimentPath{ "" };
@@ -61,11 +63,15 @@ class Recorder {
     ofSoundStream soundStream;
     short *       shortBuffer;
     vector<float> inputFrames;
+    vector<float> left;
+    vector<float> right;
     size_t        lastAudioTimeReset;
     int           bufferCounter;
     int           audioCounter;
     float         audioFPS;        //! used to calculate audio fps
     bool          mAudio{ false }; // setDisableAudio
+    float         mScaledVol{ 0.0f };
+    float         mSmoothedVol{ 0.0f };
 
     //! Recorders
     ofxFFmpegRecorder mRecorderAud;

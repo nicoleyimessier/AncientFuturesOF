@@ -51,8 +51,15 @@ void AppManager::update( float dt )
         if( elapsedTime > animationTime )
             setAppState( AppStates::STOPPING );
     }
+
+    // Time out
     if( mAppState == AppStates::STOPPING && ( ofGetElapsedTimef() - startTyTimer ) > tyTimeDur ) {
         setAppState( AppStates::IDLE );
+    }
+
+    // if we are recording, send volume data to the arduino 
+    if( mAppState == AppStates::RECORDING ) {
+        arduino.sendVolumeData( recorder.getMappedVolume() ); 
     }
 }
 
