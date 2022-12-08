@@ -86,7 +86,7 @@ void Recorder::setupSoundBuffer()
 
 void Recorder::update()
 {
-    //ofLogNotice() << "mSmoothedVol: " << mSmoothedVol; 
+    // ofLogNotice() << "mSmoothedVol: " << mSmoothedVol;
 
     mScaledVol = ofMap( mSmoothedVol, 0.0, 0.05, 0.1, 1.0, true );
 
@@ -131,16 +131,16 @@ void Recorder::drawDebug()
 
         ofSetColor( 0, 0, 0, 100 );
         ofFill();
-        ofDrawCircle( ofGetWidth()/2, ofGetHeight()/2, mScaledVol * 300.0f );
+        ofDrawCircle( ofGetWidth() / 2, ofGetHeight() / 2, mScaledVol * 300.0f );
     }
     ofPopStyle();
 
 
     // Draw audio
-    drawAudio();
+    drawAudio(1);
 }
 
-void Recorder::drawAudio()
+void Recorder::drawAudio( int withVolume )
 {
     ofPushStyle();
     ofPushMatrix();
@@ -153,9 +153,11 @@ void Recorder::drawAudio()
     ofBeginShape();
     for( unsigned int i = 0; i < inputFrames.size(); i++ ) {
         float y = 100 - inputFrames[i] * 580.0f;
-        // ofVertex( i, y );
-        ofVertex( i * 2, y );
-        // ofVertex(i*2, 100);
+
+        if( withVolume )
+            ofVertex( i * 2, y );
+        else
+            ofVertex( i * 2, 100 );
     }
     ofEndShape( false );
 
@@ -228,7 +230,7 @@ void Recorder::audioIn( ofSoundBuffer &input )
     curVol /= (float)numCounted; // mean of rms
     curVol = sqrt( curVol );     // root of rms
 
-	mSmoothedVol *= 0.93;
+    mSmoothedVol *= 0.93;
     mSmoothedVol += 0.07 * curVol;
 
     /* for( size_t i = 0; i < input.getNumFrames(); i++ ) {
@@ -351,4 +353,9 @@ bool Recorder::getIsDoneProcessing()
 int Recorder::getMappedVolume()
 {
     return (int)ofMap( mSmoothedVol, 0.0, 0.05, 0.0, 255.0, true );
+}
+
+float Recorder::getNormalizedVolume()
+{
+    return ofMap( mSmoothedVol, 0.0, 0.05, 0.0, 1.0, true );
 }

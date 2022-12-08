@@ -26,15 +26,24 @@ void AppManager::setup()
 
     pMan.setup();
 
+    // setup osc manager
+    oscMan.setup( "192.168.1.4", "app", 4455, "" );
 
     ofAddListener( ofEvents().keyPressed, this, &AppManager::onKeyPressed );
 }
 
 void AppManager::update( float dt )
 {
+
     recorder.update();
     arduino.update();
     pMan.update( dt );
+    oscMan.update( dt );
+
+    if( oscMan.getStartExpereince() ) {
+        oscMan.send( recorder.getNormalizedVolume() );
+    }
+
 
     if( mAppState == AppStates::COUNTDOWN && pMan.getDifference() > 3.0f ) {
         setAppState( AppStates::RECORDING );
@@ -57,16 +66,23 @@ void AppManager::update( float dt )
         setAppState( AppStates::IDLE );
     }
 
-    // if we are recording, send volume data to the arduino 
+    // if we are recording, send volume data to the arduino
     if( mAppState == AppStates::RECORDING ) {
-        arduino.sendVolumeData( recorder.getMappedVolume() ); 
+        arduino.sendVolumeData( recorder.getMappedVolume() );
     }
 }
 
 void AppManager::draw()
 {
     pMan.draw();
-    recorder.drawAudio();
+
+    if( usingOsc ) {
+        recorder.drawAudio( oscMan.getStartExpereince() );
+    }
+    else {
+        recorder.drawAudio(0);
+    }
+  
 
     if( configs().one().mAppDebug ) {
 
@@ -92,8 +108,8 @@ void AppManager::setAppState( AppStates state )
     case AppStates::COUNTDOWN: {
         pMan.setPage( Pages::COUNTDOWN );
 
-          if( useArduino )
-            arduino.sendRecording(); 
+        if( useArduino )
+            arduino.sendRecording();
         break;
     }
     case AppStates::RECORDING: {
@@ -105,9 +121,9 @@ void AppManager::setAppState( AppStates state )
         pMan.setPage( Pages::PROCESSING );
         recorder.stop();
 
-        
+
         if( useArduino )
-            arduino.sendAnalyzing(); 
+            arduino.sendAnalyzing();
         break;
     }
     case AppStates::ANIMATING: {
@@ -115,7 +131,7 @@ void AppManager::setAppState( AppStates state )
 
         float pos = 0.0f;
         float neg = 0.0f;
-        float neu = 0.0f; 
+        float neu = 0.0f;
 
         // open json file
         if( ofFile::doesFileExist( recorder.getSentimentPath() ) ) {
@@ -201,10 +217,10 @@ void AppManager::onKeyPressed( ofKeyEventArgs &e )
 {
     switch( e.key ) {
     case '1':
-        arduino.sendRecording(); 
+        arduino.sendRecording();
         break;
     case '2':
-        arduino.sendAnalyzing(); 
+        arduino.sendAnalyzing();
         break;
     case '3':
         arduino.sendSentimentMsg( 1.0f, 0.0f, 0.0f );
@@ -216,11 +232,14 @@ void AppManager::onKeyPressed( ofKeyEventArgs &e )
         arduino.sendSentimentMsg( 0.0f, 0.0f, 1.0f );
         break;
     case '6':
-        arduino.sendStopMsg(); 
-        break; 
-   case '7':
-        arduino.sendVolumeData(1);
-        break; 
+        arduino.sendStopMsg();
+        break;
+    case '7':
+        arduino.sendVolumeData( 1 );
+        break;
+    case '8':
+        oscMan.send( 1.0f );
+        break;
     default:
         break;
     }

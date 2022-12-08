@@ -16,7 +16,7 @@ class Recorder {
     void audioIn( ofSoundBuffer &input );
     void draw( int x, int y, float width, float height );
     void drawDebug();
-    void drawAudio();
+    void drawAudio( int withVolume );
     void onExit( ofEventArgs &e );
 
     //! getters
@@ -26,6 +26,7 @@ class Recorder {
     bool   getIsDoneProcessing();
     string getSentimentPath() { return mVisitorSentimentPath; }
     int    getMappedVolume();
+    float  getNormalizedVolume(); 
 
     //! setters
     void setAudioEnabled( bool enable ) { mAudio = enable; }

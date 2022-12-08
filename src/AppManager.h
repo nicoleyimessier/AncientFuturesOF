@@ -6,6 +6,7 @@
 #include "AFStructs.h"
 #include "AppSettings.h"
 #include "PageManager.h"
+#include "OSCManager.h"
 
 using namespace AncientFutures; 
 
@@ -51,5 +52,9 @@ class AppManager {
     // CLOSING TIMER
     float startTyTimer{ 0.0f };
     float tyTimeDur{ 5.0f };
+
+    // osc
+    OSCManager oscMan; 
+    bool usingOsc = true; 
   
 };
