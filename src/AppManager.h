@@ -26,6 +26,7 @@ class AppManager {
 
     // Getters
     string getAppStateString(); 
+    AppStates getAppState() { return mAppState; }; 
 
   private:
 
@@ -51,7 +52,7 @@ class AppManager {
 
     // CLOSING TIMER
     float startTyTimer{ 0.0f };
-    float tyTimeDur{ 5.0f };
+    float tyTimeDur{ 20.0f };
 
     // osc
     OSCManager oscMan; 

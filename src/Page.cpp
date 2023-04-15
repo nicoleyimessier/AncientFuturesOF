@@ -61,16 +61,16 @@ void Page::drawDescription()
     bool   wordsWereCropped;
 
     ofSetColor( configs().textColor );
-    fonts().NunitoSansReg.drawMultiLineColumn( mDescription, // string
-        mRegTextSize,                               // size
+    fonts().NunitoSansBold.drawMultiLineColumn( mDescription, // string
+        mDescriptionTextSize,                                // size
         descriptionPos.x, descriptionPos.y,                  // position
-        mColWidth,                                  // column width
+        mColWidthDescription,                                // column width
         numLines,                                   // get back the number of lines
         false,                                      // true would not draw, just get back the rectangle
         55,                                          // max number of lines
         true,                                       // get the final text formatting (by adding \n's) in the supplied string
         &wordsWereCropped,                          // this is set to true if the box was too small to fit all of the text
-        false                                       // centered
+        true                                       // centered
     );
 }
 
@@ -80,7 +80,7 @@ void Page::drawPrompt()
     bool wordsWereCropped;
 
     ofSetColor( configs().textColor );
-    fonts().NunitoSansBold.drawMultiLineColumn( ofToUpper(mPrompt), // string
+    fonts().NunitoSansBold.drawMultiLineColumn( (mPrompt), // string
         mPromptTextSize,                                      // size
         promptPos.x, promptPos.y,                        // position
         mColWidth,                                           // column width
@@ -127,6 +127,25 @@ void Page::drawCountdown()
         55,                                                  // max number of lines
         true,                                                // get the final text formatting (by adding \n's) in the supplied string
         &wordsWereCropped,                                   // this is set to true if the box was too small to fit all of the text
+        true                                                // centered
+    );
+}
+
+void Page::drawMessageStored()
+{
+    int  numLines;
+    bool wordsWereCropped;
+
+    ofSetColor( configs().textColor );
+    fonts().NunitoSansBold.drawMultiLineColumn( mStored, // string
+        mTitleSize,                                         // size
+        storedPos.x, storedPos.y,                        // position
+        mColWidthDescription,                            // column width
+        numLines,                                           // get back the number of lines
+        false,                                              // true would not draw, just get back the rectangle
+        55,                                                 // max number of lines
+        true,                                               // get the final text formatting (by adding \n's) in the supplied string
+        &wordsWereCropped,                                  // this is set to true if the box was too small to fit all of the text
         true                                                // centered
     );
 }

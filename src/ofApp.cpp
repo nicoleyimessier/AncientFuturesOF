@@ -10,8 +10,8 @@ void ofApp::setup()
 
     // screen setup
     ofAddListener( ss.setupChanged, this, &ofApp::setupChanged );
-    //ss.setup( ofGetWidth(), ofGetHeight(), ofxScreenSetup::FULL_ONE_MONITOR );
-     ss.setup( ofGetWidth(), ofGetHeight(), ofxScreenSetup::WINDOWED );
+    // ss.setup( ofGetWidth(), ofGetHeight(), ofxScreenSetup::FULL_ONE_MONITOR );
+    ss.setup( ofGetWidth(), ofGetHeight(), ofxScreenSetup::WINDOWED );
 
 
     ofSetFrameRate( 30 );
@@ -86,7 +86,7 @@ void ofApp::touchUp( ofTouchEventArgs &touch )
 {
     if( !configs().getUseMouse() ) {
         ofLogNotice() << "touch up: " << touch.x << ", " << touch.y << ", id: " << touch.id;
-        app.nextState(); 
+        app.nextState();
     }
 }
 
@@ -111,7 +111,9 @@ void ofApp::mouseReleased( int x, int y, int button )
 {
     if( configs().getUseMouse() ) {
         ofLogNotice() << "mouseReleased: " << x << ", " << y;
-        app.nextState();
+
+        if( app.getAppState() == AppStates::IDLE || app.getAppState() == AppStates::STOPPING )
+            app.nextState();
     }
 }
 

@@ -26,6 +26,8 @@ void AppManager::setup()
 
     pMan.setup();
 
+    
+
     // setup osc manager
     oscMan.setup( "192.168.1.4", "app", 4455, "" );
 
@@ -34,18 +36,14 @@ void AppManager::setup()
 
 void AppManager::update( float dt )
 {
-
-    recorder.update();
     arduino.update();
+    recorder.update();
     pMan.update( dt );
     oscMan.update( dt );
 
-    if( oscMan.getStartExpereince() ) {
+    if( mAppState == AppStates::IDLE && oscMan.getStartExpereince() ) {
         oscMan.send( recorder.getNormalizedVolume() );
-    }
-
-
-    if( mAppState == AppStates::COUNTDOWN && pMan.getDifference() > 3.0f ) {
+    } else if( mAppState == AppStates::COUNTDOWN && pMan.getDifference() > 3.0f ) {
         setAppState( AppStates::RECORDING );
     }
     else if( mAppState == AppStates::RECORDING && pMan.getTimer() > 20.0f ) {
@@ -107,6 +105,9 @@ void AppManager::setAppState( AppStates state )
     }
     case AppStates::COUNTDOWN: {
         pMan.setPage( Pages::COUNTDOWN );
+
+        if( usingOsc )
+            oscMan.send( 0 );
 
         if( useArduino )
             arduino.sendRecording();
@@ -240,6 +241,9 @@ void AppManager::onKeyPressed( ofKeyEventArgs &e )
     case '8':
         oscMan.send( 1.0f );
         break;
+    case '9':
+        setAppState( AppStates::STOPPING );
+        break; 
     default:
         break;
     }

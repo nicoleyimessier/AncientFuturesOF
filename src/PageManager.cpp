@@ -43,7 +43,7 @@ void PageManager::draw()
 
     switch( mPage ) {
     case Pages::INTRO: {
-        page.drawDescription();
+        //page.drawDescription();
         page.drawPrompt();
         page.drawLang();
         break;
@@ -62,7 +62,8 @@ void PageManager::draw()
         page.drawCountdown();
         break;
     case Pages::CLOSE_OUT:
-        page.drawCountdown();
+        page.drawMessageStored();
+        page.drawDescription(); 
         break;
     default:
         break;
@@ -90,13 +91,12 @@ void PageManager::setPage( Pages _page )
         break;
     case Pages::PROCESSING:
         timerIndex = 20;
-        page.setCountdown( "Processing" );
+        page.setCountdown( "Processing your sonic message." );
         break;
     case Pages::ANIMATING:
-        page.setCountdown( "..." );
+        page.setCountdown( "Message stored as sonic light." );
         break;
     case Pages::CLOSE_OUT:
-        page.setCountdown( "Sonic secret stored" );
         break;
     default:
         break;

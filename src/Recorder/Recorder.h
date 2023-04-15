@@ -51,9 +51,9 @@ class Recorder {
     void                 setAudioState( AudioRecordingStates state );
 
     //! Paths
-    string mRootPath{ //"C:\\ancient_futures\\of_v0.11.2_vs2017_release\\apps\\myApps\\AncientFuturesOF\\bin\\"
-        "C:\\Users\\nicol\\Documents\\code\\openFrameworks\\of_v0.11.2_vs2017_release\\of_v0.11.2_vs2017_"
-        "release\\apps\\myApps\\\AncientFuturesApp\\bin\\"
+    string mRootPath{ "C:\\ancient_futures\\of_v0.11.2_vs2017_release\\apps\\myApps\\AncientFuturesOF\\bin\\"
+        //"C:\\Users\\nicol\\Documents\\code\\openFrameworks\\of_v0.11.2_vs2017_release\\of_v0.11.2_vs2017_"
+        //"release\\apps\\myApps\\\AncientFuturesApp\\bin\\"
     };
     string mRecordingPath{ "recordings\\" };
     string mVisitorPath{ "" };

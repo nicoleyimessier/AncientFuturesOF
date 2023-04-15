@@ -288,12 +288,12 @@ void Recorder::translateSpeechToText()
 {
     ofLogNotice() << "TRANSCRIBE AUDIO FILE";
     // uncomment for install computer
-    // string batPath = "C:\\ancient_futures\\AncientFutures\\scripts\\transcribe.bat";
-    // string keyPath = "C:\\ancient_futures\\ancient-futures-343119-c8149bde1b51.json";
+     string batPath = "C:\\ancient_futures\\AncientFutures\\scripts\\transcribe.bat";
+     string keyPath = "C:\\ancient_futures\\ancient-futures-343119-c8149bde1b51.json";
 
     // uncomment for nicole's personal computer
-    string batPath = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\AncientFutures\\scripts\\transcribe.bat";
-    string keyPath = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\ancient-futures-343119-c8149bde1b51.json";
+    //string batPath = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\AncientFutures\\scripts\\transcribe.bat";
+    //string keyPath = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\ancient-futures-343119-c8149bde1b51.json";
     // string audioPath = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\ManualTest.wav";
 
     string audioPath = mRootPath + mVisitorAudioPath;
@@ -323,10 +323,10 @@ void Recorder::performSentimentAnalysis()
 {
     ofLogNotice() << "PERFORM SENTIMENT ANALYSIS";
     // uncomment for install computer
-    // string pythonFile = "C:\\ancient_futures\\AncientFutures\\nlk\\nlk_sentiment.py";
+     string pythonFile = "C:\\ancient_futures\\AncientFutures\\nlk\\nlk_sentiment.py";
 
     // uncomment for nicole's personal computer
-    string pythonFile = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\AncientFutures\\nlk\\nlk_sentiment.py";
+    //string pythonFile = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\AncientFutures\\nlk\\nlk_sentiment.py";
 
     mVisitorSentimentPath = mRootPath + mVisitorPath + "\\sentiment.json";
     string path = ofSystem( "echo %path%" );

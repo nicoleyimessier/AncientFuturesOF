@@ -1,5 +1,6 @@
 ofxFFmpegRecorder
 ofxFontStash
 ofxGui
+ofxOsc
 ofxScreenSetup
 ofxWinTouchHook
