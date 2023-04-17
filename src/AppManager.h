@@ -56,6 +56,6 @@ class AppManager {
 
     // osc
     OSCManager oscMan; 
-    bool usingOsc = true; 
+    bool usingOsc = false; 
   
 };

@@ -4,3 +4,4 @@ ofxGui
 ofxOsc
 ofxScreenSetup
 ofxWinTouchHook
+ofxTimeMeasurements

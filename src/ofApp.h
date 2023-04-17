@@ -7,6 +7,7 @@
 #include "ofMain.h"
 #include "ofxScreenSetup.h"
 #include "ofxWinTouchHook.h"
+#include "ofxTimeMeasurements.h"
 
 class ofApp : public ofBaseApp {
 

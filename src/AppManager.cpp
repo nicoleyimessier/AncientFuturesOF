@@ -27,9 +27,11 @@ void AppManager::setup()
     pMan.setup();
 
     
+    if( usingOsc ) {
 
-    // setup osc manager
-    oscMan.setup( "192.168.1.4", "app", 4455, "" );
+        // setup osc manager
+        oscMan.setup( "192.168.1.4", "app", 4455, "" );
+    }
 
     ofAddListener( ofEvents().keyPressed, this, &AppManager::onKeyPressed );
 }

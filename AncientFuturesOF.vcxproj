@@ -100,7 +100,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;src\Recorder;..\..\..\addons\ofxFFmpegRecorder\src;..\..\..\addons\ofxFontStash\libs;..\..\..\addons\ofxFontStash\libs\fontstash;..\..\..\addons\ofxFontStash\libs\fontstash\src;..\..\..\addons\ofxFontStash\src;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxOsc\libs;..\..\..\addons\ofxOsc\libs\oscpack;..\..\..\addons\ofxOsc\libs\oscpack\src;..\..\..\addons\ofxOsc\libs\oscpack\src\ip;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32;..\..\..\addons\ofxOsc\libs\oscpack\src\osc;..\..\..\addons\ofxOsc\src;..\..\..\addons\ofxScreenSetup\src;..\..\..\addons\ofxWinTouchHook\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;src\Recorder;..\..\..\addons\ofxFFmpegRecorder\src;..\..\..\addons\ofxFontStash\libs;..\..\..\addons\ofxFontStash\libs\fontstash;..\..\..\addons\ofxFontStash\libs\fontstash\src;..\..\..\addons\ofxFontStash\src;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxOsc\libs;..\..\..\addons\ofxOsc\libs\oscpack;..\..\..\addons\ofxOsc\libs\oscpack\src;..\..\..\addons\ofxOsc\libs\oscpack\src\ip;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32;..\..\..\addons\ofxOsc\libs\oscpack\src\osc;..\..\..\addons\ofxOsc\src;..\..\..\addons\ofxScreenSetup\src;..\..\..\addons\ofxWinTouchHook\src;..\..\..\addons\ofxTimeMeasurements\src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
       <PreprocessorDefinitions>USE_OFX_FONTSTASH</PreprocessorDefinitions>
@@ -122,7 +122,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;src\Recorder;..\..\..\addons\ofxFFmpegRecorder\src;..\..\..\addons\ofxFontStash\libs;..\..\..\addons\ofxFontStash\libs\fontstash;..\..\..\addons\ofxFontStash\libs\fontstash\src;..\..\..\addons\ofxFontStash\src;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxOsc\libs;..\..\..\addons\ofxOsc\libs\oscpack;..\..\..\addons\ofxOsc\libs\oscpack\src;..\..\..\addons\ofxOsc\libs\oscpack\src\ip;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32;..\..\..\addons\ofxOsc\libs\oscpack\src\osc;..\..\..\addons\ofxOsc\src;..\..\..\addons\ofxScreenSetup\src;..\..\..\addons\ofxWinTouchHook\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;src\Recorder;..\..\..\addons\ofxFFmpegRecorder\src;..\..\..\addons\ofxFontStash\libs;..\..\..\addons\ofxFontStash\libs\fontstash;..\..\..\addons\ofxFontStash\libs\fontstash\src;..\..\..\addons\ofxFontStash\src;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxOsc\libs;..\..\..\addons\ofxOsc\libs\oscpack;..\..\..\addons\ofxOsc\libs\oscpack\src;..\..\..\addons\ofxOsc\libs\oscpack\src\ip;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32;..\..\..\addons\ofxOsc\libs\oscpack\src\osc;..\..\..\addons\ofxOsc\src;..\..\..\addons\ofxScreenSetup\src;..\..\..\addons\ofxWinTouchHook\src;..\..\..\addons\ofxTimeMeasurements\src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
@@ -144,7 +144,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;src\Recorder;..\..\..\addons\ofxFFmpegRecorder\src;..\..\..\addons\ofxFontStash\libs;..\..\..\addons\ofxFontStash\libs\fontstash;..\..\..\addons\ofxFontStash\libs\fontstash\src;..\..\..\addons\ofxFontStash\src;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxOsc\libs;..\..\..\addons\ofxOsc\libs\oscpack;..\..\..\addons\ofxOsc\libs\oscpack\src;..\..\..\addons\ofxOsc\libs\oscpack\src\ip;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32;..\..\..\addons\ofxOsc\libs\oscpack\src\osc;..\..\..\addons\ofxOsc\src;..\..\..\addons\ofxScreenSetup\src;..\..\..\addons\ofxWinTouchHook\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;src\Recorder;..\..\..\addons\ofxFFmpegRecorder\src;..\..\..\addons\ofxFontStash\libs;..\..\..\addons\ofxFontStash\libs\fontstash;..\..\..\addons\ofxFontStash\libs\fontstash\src;..\..\..\addons\ofxFontStash\src;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxOsc\libs;..\..\..\addons\ofxOsc\libs\oscpack;..\..\..\addons\ofxOsc\libs\oscpack\src;..\..\..\addons\ofxOsc\libs\oscpack\src\ip;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32;..\..\..\addons\ofxOsc\libs\oscpack\src\osc;..\..\..\addons\ofxOsc\src;..\..\..\addons\ofxScreenSetup\src;..\..\..\addons\ofxWinTouchHook\src;..\..\..\addons\ofxTimeMeasurements\src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
@@ -169,7 +169,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;src\Recorder;..\..\..\addons\ofxFFmpegRecorder\src;..\..\..\addons\ofxFontStash\libs;..\..\..\addons\ofxFontStash\libs\fontstash;..\..\..\addons\ofxFontStash\libs\fontstash\src;..\..\..\addons\ofxFontStash\src;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxOsc\libs;..\..\..\addons\ofxOsc\libs\oscpack;..\..\..\addons\ofxOsc\libs\oscpack\src;..\..\..\addons\ofxOsc\libs\oscpack\src\ip;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32;..\..\..\addons\ofxOsc\libs\oscpack\src\osc;..\..\..\addons\ofxOsc\src;..\..\..\addons\ofxScreenSetup\src;..\..\..\addons\ofxWinTouchHook\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;src\Recorder;..\..\..\addons\ofxFFmpegRecorder\src;..\..\..\addons\ofxFontStash\libs;..\..\..\addons\ofxFontStash\libs\fontstash;..\..\..\addons\ofxFontStash\libs\fontstash\src;..\..\..\addons\ofxFontStash\src;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxOsc\libs;..\..\..\addons\ofxOsc\libs\oscpack;..\..\..\addons\ofxOsc\libs\oscpack\src;..\..\..\addons\ofxOsc\libs\oscpack\src\ip;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32;..\..\..\addons\ofxOsc\libs\oscpack\src\osc;..\..\..\addons\ofxOsc\src;..\..\..\addons\ofxScreenSetup\src;..\..\..\addons\ofxWinTouchHook\src;..\..\..\addons\ofxTimeMeasurements\src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
       <PreprocessorDefinitions>USE_OFX_FONTSTASH</PreprocessorDefinitions>
@@ -188,6 +188,9 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\addons\ofxTimeMeasurements\src\MinimalTree.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxTimeMeasurements\src\ofxTimeMeasurements.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxTimeMeasurements\src\ofxTimeMeasurementsScoped.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\AppManager.cpp" />
@@ -229,6 +232,11 @@
     <ClCompile Include="..\..\..\addons\ofxWinTouchHook\src\ofxWinTouchHook.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\addons\ofxTimeMeasurements\src\GL_Measurement.h" />
+    <ClInclude Include="..\..\..\addons\ofxTimeMeasurements\src\MinimalTree.h" />
+    <ClInclude Include="..\..\..\addons\ofxTimeMeasurements\src\ofxTimeMeasurements.h" />
+    <ClInclude Include="..\..\..\addons\ofxTimeMeasurements\src\ofxTimeMeasurementsMacros.h" />
+    <ClInclude Include="..\..\..\addons\ofxTimeMeasurements\src\ofxTimeMeasurementsScoped.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\AFStructs.h" />
     <ClInclude Include="src\AppManager.h" />

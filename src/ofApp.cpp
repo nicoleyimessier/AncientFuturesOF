@@ -12,7 +12,7 @@ void ofApp::setup()
     ofAddListener( ss.setupChanged, this, &ofApp::setupChanged );
     // ss.setup( ofGetWidth(), ofGetHeight(), ofxScreenSetup::FULL_ONE_MONITOR );
     ss.setup( ofGetWidth(), ofGetHeight(), ofxScreenSetup::WINDOWED );
-
+    
 
     ofSetFrameRate( 30 );
     ofSetVerticalSync( true );
@@ -30,6 +30,9 @@ void ofApp::setup()
     // add touch listeners
     ofAddListener( ofxWinTouchHook::touchDown, this, &ofApp::touchDown );
     ofAddListener( ofxWinTouchHook::touchUp, this, &ofApp::touchUp );
+
+    // Time stamps
+    TIME_SAMPLE_SET_FRAMERATE( 30.0f ); // specify a target framerate
 }
 
 //--------------------------------------------------------------
