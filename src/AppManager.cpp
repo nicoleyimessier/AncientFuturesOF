@@ -80,7 +80,7 @@ void AppManager::draw()
         recorder.drawAudio( oscMan.getStartExpereince() );
     }
     else {
-        recorder.drawAudio(0);
+        recorder.drawAudio(1);
     }
   
 
