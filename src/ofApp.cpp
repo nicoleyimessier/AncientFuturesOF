@@ -33,6 +33,7 @@ void ofApp::setup()
 
     // Time stamps
     TIME_SAMPLE_SET_FRAMERATE( 30.0f ); // specify a target framerate
+    TIME_SAMPLE_DISABLE(); 
 }
 
 //--------------------------------------------------------------

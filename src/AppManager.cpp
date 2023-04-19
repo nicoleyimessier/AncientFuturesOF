@@ -26,9 +26,8 @@ void AppManager::setup()
 
     pMan.setup();
 
-    
-    if( usingOsc ) {
 
+    if( usingOsc ) {
         // setup osc manager
         oscMan.setup( "192.168.1.4", "app", 4455, "" );
     }
@@ -38,14 +37,33 @@ void AppManager::setup()
 
 void AppManager::update( float dt )
 {
+    TS_START( "arduino" );
     arduino.update();
+    TS_STOP( "arduino" );
+
+    TS_START( "recorder" );
     recorder.update();
+    TS_STOP( "recorder" );
+
+    TS_START( "pMan" );
     pMan.update( dt );
-    oscMan.update( dt );
+    TS_STOP( "pMan" );
+
+
+    if( usingOsc ) {
+        oscMan.update( dt );
+    }
+
+    if( testing ) {
+        float elapsed = ofGetElapsedTimef() - startTime;
+        if( mAppState == AppStates::IDLE && elapsed > 5.0f )
+            setAppState( AppStates::COUNTDOWN );
+    }
 
     if( mAppState == AppStates::IDLE && oscMan.getStartExpereince() ) {
         oscMan.send( recorder.getNormalizedVolume() );
-    } else if( mAppState == AppStates::COUNTDOWN && pMan.getDifference() > 3.0f ) {
+    }
+    else if( mAppState == AppStates::COUNTDOWN && pMan.getDifference() > 3.0f ) {
         setAppState( AppStates::RECORDING );
     }
     else if( mAppState == AppStates::RECORDING && pMan.getTimer() > 20.0f ) {
@@ -74,15 +92,18 @@ void AppManager::update( float dt )
 
 void AppManager::draw()
 {
+    TS_START( "pMan draw" );
     pMan.draw();
+    TS_STOP( "pMan draw" );
 
+    TS_START( "recorder draw" );
     if( usingOsc ) {
         recorder.drawAudio( oscMan.getStartExpereince() );
     }
     else {
-        recorder.drawAudio(1);
+        recorder.drawAudio( 1 );
     }
-  
+    TS_STOP( "recorder draw" );
 
     if( configs().one().mAppDebug ) {
 
@@ -99,6 +120,8 @@ void AppManager::setAppState( AppStates state )
     mAppState = state;
 
     ofLogNotice( "AppManager::setAppState" ) << "Changing state to " << getAppStateString();
+
+    startTime = ofGetElapsedTimef();
 
     switch( mAppState ) {
     case AppStates::IDLE: {
@@ -245,7 +268,7 @@ void AppManager::onKeyPressed( ofKeyEventArgs &e )
         break;
     case '9':
         setAppState( AppStates::STOPPING );
-        break; 
+        break;
     default:
         break;
     }

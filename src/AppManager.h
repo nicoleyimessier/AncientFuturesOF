@@ -1,14 +1,15 @@
 #pragma once
 
-#include "Arduino.h"
-#include "Recorder.h"
-#include "ofMain.h"
 #include "AFStructs.h"
 #include "AppSettings.h"
-#include "PageManager.h"
+#include "Arduino.h"
 #include "OSCManager.h"
+#include "PageManager.h"
+#include "Recorder.h"
+#include "ofMain.h"
+#include "ofxTimeMeasurements.h"
 
-using namespace AncientFutures; 
+using namespace AncientFutures;
 
 class AppManager {
 
@@ -22,29 +23,28 @@ class AppManager {
 
     // App states
     void setAppState( AppStates state );
-    void nextState(); 
+    void nextState();
 
     // Getters
-    string getAppStateString(); 
-    AppStates getAppState() { return mAppState; }; 
+    string    getAppStateString();
+    AppStates getAppState() { return mAppState; };
 
   private:
-
     // Functions
     void onKeyPressed( ofKeyEventArgs &e );
-    
+
     // App states
     AppStates mAppState{ AppStates::IDLE };
 
     // Pages
-    PageManager pMan; 
+    PageManager pMan;
 
     // Recorder
     Recorder recorder;
 
     // Arduino + Serial Comms
     Arduino arduino;
-    bool useArduino{ true }; 
+    bool    useArduino{ true };
 
     // Animation timer
     float startAnimationTime{ 0.0f };
@@ -55,7 +55,13 @@ class AppManager {
     float tyTimeDur{ 20.0f };
 
     // osc
-    OSCManager oscMan; 
-    bool usingOsc = false; 
-  
+    OSCManager oscMan;
+    bool       usingOsc{ false };
+
+
+    // testing
+    bool testing { true };
+    float startTime {0.0f};
+    
+    float durationTesting {10.0f}; 
 };
