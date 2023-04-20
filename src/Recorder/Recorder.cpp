@@ -61,19 +61,19 @@ void Recorder::setupSoundBuffer()
 {
     ofSoundStreamSettings settings;
     settings.setApi( ofSoundDevice::Api::MS_DS );
-
+    /*
     auto devices = soundStream.getMatchingDevices( "Headset" );
     if( !devices.empty() ) {
         settings.setInDevice( devices[0] );
     }
 
-    /*
+    
     auto devices = soundStream.getMatchingDevices( "Focusrite USB ASIO" );
     if( !devices.empty() )
         settings.setInDevice( devices[0] );
     */
 
-    /*
+    
     // uncomment for install pc
     auto devices = soundStream.getDeviceList( ofSoundDevice::Api::MS_DS );
     for( auto &device : devices ) {
@@ -81,7 +81,7 @@ void Recorder::setupSoundBuffer()
         if( device.name == "Microphone (JLAB TALK PRO MICROPHONE)" )
             settings.setInDevice( device );
     }
-    */
+    
 
 
     // install pc
