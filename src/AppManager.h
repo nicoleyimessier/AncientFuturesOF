@@ -60,7 +60,7 @@ class AppManager {
 
 
     // testing
-    bool testing { true };
+    bool testing { false };
     float startTime {0.0f};
     
     float durationTesting {10.0f}; 
