@@ -60,6 +60,12 @@ void Recorder::setup( string recordingPath )
 void Recorder::setupSoundBuffer()
 {
     ofSoundStreamSettings settings;
+    settings.setApi( ofSoundDevice::Api::MS_DS );
+
+    auto devices = soundStream.getMatchingDevices( "Headset" );
+    if( !devices.empty() ) {
+        settings.setInDevice( devices[0] );
+    }
 
     /*
     auto devices = soundStream.getMatchingDevices( "Focusrite USB ASIO" );
@@ -67,16 +73,18 @@ void Recorder::setupSoundBuffer()
         settings.setInDevice( devices[0] );
     */
 
+    /*
+    // uncomment for install pc
     auto devices = soundStream.getDeviceList( ofSoundDevice::Api::MS_DS );
     for( auto &device : devices ) {
         // ofLogNotice() << device.name;
         if( device.name == "Microphone (JLAB TALK PRO MICROPHONE)" )
             settings.setInDevice( device );
     }
+    */
 
 
-    settings.setApi( ofSoundDevice::Api::MS_DS );
-
+    // install pc
     settings.setInListener( this );
     settings.sampleRate = 44100;
     settings.numInputChannels = 2;
@@ -137,7 +145,7 @@ void Recorder::drawDebug()
 
 
     // Draw audio
-    drawAudio(1);
+    drawAudio( 1 );
 }
 
 void Recorder::drawAudio( int withVolume )
@@ -192,21 +200,6 @@ void Recorder::stop()
 void Recorder::audioIn( ofSoundBuffer &input )
 {
 
-    switch( mAudState ) {
-
-    case AudioRecordingStates::RECORDING: {
-        if( mRecorderAud.isRecording() ) {
-            mRecorderAud.addBuffer( input, 30.0f );
-        }
-        break;
-    }
-    case AudioRecordingStates::PREP_STOP: {
-        setAudioState( AudioRecordingStates::STOP );
-        break;
-    }
-    default:
-        break;
-    }
 
     float curVol = 0.0;
     int   numCounted = 0; // samples are "interleaved"
@@ -239,6 +232,22 @@ void Recorder::audioIn( ofSoundBuffer &input )
          float y = ofMap( sample, -1, 1, 0, ofGetHeight() );
          waveform.addVertex( x, y );
      }*/
+
+    switch( mAudState ) {
+
+    case AudioRecordingStates::RECORDING: {
+        if( mRecorderAud.isRecording() ) {
+            mRecorderAud.addBuffer( input, 30.0f );
+        }
+        break;
+    }
+    case AudioRecordingStates::PREP_STOP: {
+        setAudioState( AudioRecordingStates::STOP );
+        break;
+    }
+    default:
+        break;
+    }
 }
 
 void Recorder::setAudioState( AudioRecordingStates state )
@@ -288,12 +297,12 @@ void Recorder::translateSpeechToText()
 {
     ofLogNotice() << "TRANSCRIBE AUDIO FILE";
     // uncomment for install computer
-     string batPath = "C:\\ancient_futures\\AncientFutures\\scripts\\transcribe.bat";
-     string keyPath = "C:\\ancient_futures\\ancient-futures-343119-c8149bde1b51.json";
+    // string batPath = "C:\\ancient_futures\\AncientFutures\\scripts\\transcribe.bat";
+    // string keyPath = "C:\\ancient_futures\\ancient-futures-343119-c8149bde1b51.json";
 
     // uncomment for nicole's personal computer
-    //string batPath = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\AncientFutures\\scripts\\transcribe.bat";
-    //string keyPath = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\ancient-futures-343119-c8149bde1b51.json";
+    string batPath = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\AncientFutures\\scripts\\transcribe.bat";
+    string keyPath = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\ancient-futures-343119-c8149bde1b51.json";
     // string audioPath = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\ManualTest.wav";
 
     string audioPath = mRootPath + mVisitorAudioPath;
@@ -323,10 +332,10 @@ void Recorder::performSentimentAnalysis()
 {
     ofLogNotice() << "PERFORM SENTIMENT ANALYSIS";
     // uncomment for install computer
-     string pythonFile = "C:\\ancient_futures\\AncientFutures\\nlk\\nlk_sentiment.py";
+    // string pythonFile = "C:\\ancient_futures\\AncientFutures\\nlk\\nlk_sentiment.py";
 
     // uncomment for nicole's personal computer
-    //string pythonFile = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\AncientFutures\\nlk\\nlk_sentiment.py";
+    string pythonFile = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\AncientFutures\\nlk\\nlk_sentiment.py";
 
     mVisitorSentimentPath = mRootPath + mVisitorPath + "\\sentiment.json";
     string path = ofSystem( "echo %path%" );
