@@ -10,8 +10,8 @@ void ofApp::setup()
 
     // screen setup
     ofAddListener( ss.setupChanged, this, &ofApp::setupChanged );
-    // ss.setup( ofGetWidth(), ofGetHeight(), ofxScreenSetup::FULL_ONE_MONITOR );
-    ss.setup( ofGetWidth(), ofGetHeight(), ofxScreenSetup::WINDOWED );
+     ss.setup( ofGetWidth(), ofGetHeight(), ofxScreenSetup::FULL_ONE_MONITOR );
+    //ss.setup( ofGetWidth(), ofGetHeight(), ofxScreenSetup::WINDOWED );
     
 
     ofSetFrameRate( 30 );
