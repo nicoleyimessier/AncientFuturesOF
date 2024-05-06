@@ -27,10 +27,12 @@ void AppSettings::setup()
                     mUseArduino = app.value( "use_arduino", false );
                     mUseOSC = app.value( "use_OSC", false );
 
+
 					// paths
                     mRootPath = app.value( "root_path", "" );
                     mBatPath = app.value( "bat_path", "" );
                     mKeyPath = app.value( "key_path", "" );
+                    mSentimentPath = app.value( "key_path", "" );
 
 				}
 				else

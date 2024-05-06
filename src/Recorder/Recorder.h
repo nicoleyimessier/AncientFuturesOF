@@ -55,6 +55,7 @@ class Recorder {
     string mRootPath{ "" };
     string mBatPath{ "" };
     string mKeyPath{ "" };
+    string mPythonFile{ "" }; 
     string mRecordingPath{ "recordings\\" };
     string mVisitorPath{ "" };
     string mVisitorAudioPath{ "" };

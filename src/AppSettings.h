@@ -28,6 +28,7 @@ class AppSettings final {
     string getRootPath() const { return mRootPath; }
     string getBatPath() const { return mBatPath; }
     string getKeyPath() const { return mKeyPath; }
+    string getPythonSentimentPath() const {return mSentimentPath; }
 
     // --- COLORS --- //
     ofColor bgColor = ofColor( 117, 95, 134 );
@@ -50,6 +51,7 @@ class AppSettings final {
     string    mRootPath{ "" };
     string    mBatPath{ "" };
     string    mKeyPath{ "" };
+    string mSentimentPath{ "" }; 
     glm::vec2 mAppSize{ 1920.0f, 1080.0f };
 
 

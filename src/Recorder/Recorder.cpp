@@ -50,7 +50,7 @@ void Recorder::setup( string recordingPath )
     mRootPath = configs().one().getRootPath();
     mBatPath = configs().one().getBatPath();
     mKeyPath = configs().one().getKeyPath();
-
+    mPythonFile = configs().one().getPythonSentimentPath(); 
     // Setup audio buffer
     int bufferSize = 1024;
     inputFrames.assign( bufferSize, 0.0 );
@@ -328,18 +328,13 @@ void Recorder::translateSpeechToText()
 void Recorder::performSentimentAnalysis()
 {
     ofLogNotice() << "PERFORM SENTIMENT ANALYSIS";
-    // uncomment for install computer
-    string pythonFile = "C:\\ancient_futures\\AncientFutures\\nlk\\nlk_sentiment.py";
-
-    // uncomment for nicole's personal computer
-    // string pythonFile = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\AncientFutures\\nlk\\nlk_sentiment.py";
-
+    
     mVisitorSentimentPath = mRootPath + mVisitorPath + "\\sentiment.json";
     string path = ofSystem( "echo %path%" );
     string cmd = "set PATH=" + path;
     // ofLogNotice() << cmd;
     ofSystem( cmd );
-    cmd = "python " + pythonFile + " " + "\"" + translation + "\"" + " " + "\"" + mVisitorSentimentPath + "\"";
+    cmd = "python " + mPythonFile + " " + "\"" + translation + "\"" + " " + "\"" + mVisitorSentimentPath + "\"";
     ofLogNotice() << cmd;
     sentimentAnalysis = ofSystem( cmd );
     ofLogNotice() << "Sentiment Analysis Result: " << sentimentAnalysis;
