@@ -20,8 +20,14 @@ class AppSettings final {
     void setup();
 
     // --- APP SETTINGS --- //
-    bool getLogToFile() const { return mLogToFile; }
-    bool getUseMouse() const { return mUseMouse; }
+    bool   getLogToFile() const { return mLogToFile; }
+    bool   getUseMouse() const { return mUseMouse; }
+    bool   getUseArduino() const { return mUseArduino; }
+    bool   getUseOSC() const { return mUseOSC; }
+    bool   getTesting() const { return mTesting; }
+    string getRootPath() const { return mRootPath; }
+    string getBatPath() const { return mBatPath; }
+    string getKeyPath() const { return mKeyPath; }
 
     // --- COLORS --- //
     ofColor bgColor = ofColor( 117, 95, 134 );
@@ -34,8 +40,18 @@ class AppSettings final {
 
   private:
     // --- FLAGS --- //
-    bool mLogToFile{ true };
-    bool mUseMouse{ true };
+    bool      mTesting{ false };
+    bool      mLogToFile{ true };
+    bool      mUseMouse{ true };
+    bool      mUseArduino{ false };
+    bool      mMouseOn{ false };
+    int       mWindowMode{ 8 };
+    bool      mUseOSC{ false };
+    string    mRootPath{ "" };
+    string    mBatPath{ "" };
+    string    mKeyPath{ "" };
+    glm::vec2 mAppSize{ 1920.0f, 1080.0f };
+
 
     // --- CLASS SPECIFIC --- //
     string mAppSettingsFile = "settings/AppSettings.json";

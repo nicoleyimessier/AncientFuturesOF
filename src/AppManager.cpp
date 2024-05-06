@@ -19,7 +19,7 @@ void AppManager::setup()
     recorder.setup( ofToDataPath( "recordings" ) );
 
     //! setup Arduino
-    if( useArduino ) {
+    if( configs().one().getUseArduino() ) {
         arduino.setup();
         arduino.sendStopMsg();
     }
@@ -27,7 +27,7 @@ void AppManager::setup()
     pMan.setup();
 
 
-    if( usingOsc ) {
+    if( configs().one().getUseOSC() ) {
         // setup osc manager
         oscMan.setup( "192.168.1.4", "app", 4455, "" );
     }
@@ -37,9 +37,12 @@ void AppManager::setup()
 
 void AppManager::update( float dt )
 {
-    TS_START( "arduino" );
-    arduino.update();
-    TS_STOP( "arduino" );
+
+    if( configs().one().getUseArduino() ) {
+        TS_START( "arduino" );
+        arduino.update();
+        TS_STOP( "arduino" );
+    }
 
     TS_START( "recorder" );
     recorder.update();
@@ -50,11 +53,11 @@ void AppManager::update( float dt )
     TS_STOP( "pMan" );
 
 
-    if( usingOsc ) {
+    if( configs().one().getUseOSC() ) {
         oscMan.update( dt );
     }
 
-    if( testing ) {
+    if( configs().one().getTesting() ) {
         float elapsed = ofGetElapsedTimef() - startTime;
         if( mAppState == AppStates::IDLE && elapsed > 5.0f )
             setAppState( AppStates::COUNTDOWN );
@@ -97,7 +100,7 @@ void AppManager::draw()
     TS_STOP( "pMan draw" );
 
     TS_START( "recorder draw" );
-    if( usingOsc ) {
+    if( configs().one().getUseOSC() ) {
         recorder.drawAudio( oscMan.getStartExpereince() );
     }
     else {
@@ -107,7 +110,7 @@ void AppManager::draw()
 
     if( configs().one().mAppDebug ) {
 
-        if( useArduino )
+        if( configs().one().getUseArduino() )
             arduino.drawDebug();
 
         recorder.drawDebug();
@@ -131,10 +134,10 @@ void AppManager::setAppState( AppStates state )
     case AppStates::COUNTDOWN: {
         pMan.setPage( Pages::COUNTDOWN );
 
-        if( usingOsc )
+        if( configs().one().getUseOSC() )
             oscMan.send( 0 );
 
-        if( useArduino )
+        if( configs().one().getUseArduino() )
             arduino.sendRecording();
         break;
     }
@@ -148,7 +151,7 @@ void AppManager::setAppState( AppStates state )
         recorder.stop();
 
 
-        if( useArduino )
+        if( configs().one().getUseArduino() )
             arduino.sendAnalyzing();
         break;
     }
@@ -184,14 +187,14 @@ void AppManager::setAppState( AppStates state )
             ofLogError() << "Sentiment file " << recorder.getSentimentPath() << " does not exists!";
         }
 
-        if( useArduino )
+        if( configs().one().getUseArduino() )
             arduino.sendSentimentMsg( pos, neg, neu );
 
         startAnimationTime = ofGetElapsedTimef();
         break;
     }
     case AppStates::STOPPING: {
-        if( useArduino )
+        if( configs().one().getUseArduino() )
             arduino.sendStopMsg();
 
         pMan.setPage( Pages::CLOSE_OUT );

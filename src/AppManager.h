@@ -44,7 +44,6 @@ class AppManager {
 
     // Arduino + Serial Comms
     Arduino arduino;
-    bool    useArduino{ true };
 
     // Animation timer
     float startAnimationTime{ 0.0f };
@@ -56,11 +55,9 @@ class AppManager {
 
     // osc
     OSCManager oscMan;
-    bool       usingOsc{ false };
 
 
     // testing
-    bool testing { false };
     float startTime {0.0f};
     
     float durationTesting {10.0f}; 

@@ -47,6 +47,10 @@ void Recorder::setup( string recordingPath )
 
     mRecordingPath = path + "\\";
 
+    mRootPath = configs().one().getRootPath();
+    mBatPath = configs().one().getBatPath();
+    mKeyPath = configs().one().getKeyPath();
+
     // Setup audio buffer
     int bufferSize = 1024;
     inputFrames.assign( bufferSize, 0.0 );
@@ -67,21 +71,21 @@ void Recorder::setupSoundBuffer()
         settings.setInDevice( devices[0] );
     }
 
-    
+
     auto devices = soundStream.getMatchingDevices( "Focusrite USB ASIO" );
     if( !devices.empty() )
         settings.setInDevice( devices[0] );
     */
 
-    
+
     // uncomment for install pc
     auto devices = soundStream.getDeviceList( ofSoundDevice::Api::MS_DS );
     for( auto &device : devices ) {
-        // ofLogNotice() << device.name;
-        if( device.name == "Microphone (JLAB TALK PRO MICROPHONE)" )
+        ofLogNotice() << device.name;
+        if( device.name == "Headset (LE_WH-1000XM3)" )
+            // if( device.name == "Microphone (JLAB TALK PRO MICROPHONE)" )
             settings.setInDevice( device );
     }
-    
 
 
     // install pc
@@ -296,22 +300,15 @@ void Recorder::setAudioState( AudioRecordingStates state )
 void Recorder::translateSpeechToText()
 {
     ofLogNotice() << "TRANSCRIBE AUDIO FILE";
-    // uncomment for install computer
-     string batPath = "C:\\ancient_futures\\AncientFutures\\scripts\\transcribe.bat";
-     string keyPath = "C:\\ancient_futures\\ancient-futures-343119-c8149bde1b51.json";
 
-    // uncomment for nicole's personal computer
-    //string batPath = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\AncientFutures\\scripts\\transcribe.bat";
-    //string keyPath = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\ancient-futures-343119-c8149bde1b51.json";
-    // string audioPath = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\ManualTest.wav";
 
     string audioPath = mRootPath + mVisitorAudioPath;
 
     ofLogNotice() << "Audio path: " << audioPath;
 
-    ofLogNotice() << "Transcribition command" << batPath + " " + keyPath + " " + audioPath;
+    ofLogNotice() << "Transcribition command" << mBatPath + " " + mKeyPath + " " + audioPath;
 
-    translation = ofSystem( batPath + " " + keyPath + " " + audioPath );
+    translation = ofSystem( mBatPath + " " + mKeyPath + " " + audioPath );
 
     translation.erase( remove( translation.begin(), translation.end(), '\n' ), translation.end() );
 
@@ -335,7 +332,7 @@ void Recorder::performSentimentAnalysis()
     string pythonFile = "C:\\ancient_futures\\AncientFutures\\nlk\\nlk_sentiment.py";
 
     // uncomment for nicole's personal computer
-    //string pythonFile = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\AncientFutures\\nlk\\nlk_sentiment.py";
+    // string pythonFile = "C:\\Users\\nicol\\Documents\\creative\\projects\\ancient_futures\\code\\AncientFutures\\nlk\\nlk_sentiment.py";
 
     mVisitorSentimentPath = mRootPath + mVisitorPath + "\\sentiment.json";
     string path = ofSystem( "echo %path%" );

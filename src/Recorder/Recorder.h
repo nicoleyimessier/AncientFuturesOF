@@ -3,6 +3,7 @@
 #include "AppSettings.h"
 #include "ofMain.h"
 #include "ofxFFmpegRecorder.h"
+#include "AppSettings.h"
 
 class Recorder {
   public:
@@ -51,10 +52,9 @@ class Recorder {
     void                 setAudioState( AudioRecordingStates state );
 
     //! Paths
-    string mRootPath{ "C:\\ancient_futures\\of_v0.11.2_vs2017_release\\apps\\myApps\\AncientFuturesOF\\bin\\"
-        //"C:\\Users\\nicol\\Documents\\code\\openFrameworks\\of_v0.11.2_vs2017_release\\of_v0.11.2_vs2017_"
-        //"release\\apps\\myApps\\\AncientFuturesApp\\bin\\"
-    };
+    string mRootPath{ "" };
+    string mBatPath{ "" };
+    string mKeyPath{ "" };
     string mRecordingPath{ "recordings\\" };
     string mVisitorPath{ "" };
     string mVisitorAudioPath{ "" };
