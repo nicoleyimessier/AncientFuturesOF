@@ -26,8 +26,6 @@ class AppSettings final {
     bool   getUseOSC() const { return mUseOSC; }
     bool   getTesting() const { return mTesting; }
     string getRootPath() const { return mRootPath; }
-    string getBatPath() const { return mBatPath; }
-    string getKeyPath() const { return mKeyPath; }
     string getPythonSentimentPath() const {return mSentimentPath; }
 
     // --- COLORS --- //
@@ -49,8 +47,6 @@ class AppSettings final {
     int       mWindowMode{ 8 };
     bool      mUseOSC{ false };
     string    mRootPath{ "" };
-    string    mBatPath{ "" };
-    string    mKeyPath{ "" };
     string mSentimentPath{ "" }; 
     glm::vec2 mAppSize{ 1920.0f, 1080.0f };
 

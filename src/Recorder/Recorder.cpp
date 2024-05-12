@@ -20,14 +20,6 @@ void Recorder::setup( string recordingPath )
 
     ofAddListener( ofEvents().exit, this, &Recorder::onExit );
 
-    //! Setup audio recorder
-    mRecorderAud.setup( false, true, glm::vec2( 0., 0. ) );
-    mRecorderAud.setAudioConfig( 1024, 44100 );
-    mRecorderAud.setOverWrite( true );
-
-    // you don't need to set this if FFMPEG is in your system path //
-    // mRecorderVideo.setFFmpegPathToAddonsPath();
-
     //! setup recording path
     string path = recordingPath;
     if( !ofDirectory::doesDirectoryExist( path ) )
@@ -48,8 +40,6 @@ void Recorder::setup( string recordingPath )
     mRecordingPath = path + "\\";
 
     mRootPath = configs().one().getRootPath();
-    mBatPath = configs().one().getBatPath();
-    mKeyPath = configs().one().getKeyPath();
     mPythonFile = configs().one().getPythonSentimentPath(); 
     // Setup audio buffer
     int bufferSize = 1024;
@@ -101,10 +91,6 @@ void Recorder::update()
     // ofLogNotice() << "mSmoothedVol: " << mSmoothedVol;
 
     mScaledVol = ofMap( mSmoothedVol, 0.0, 0.05, 0.1, 1.0, true );
-
-    if( mAudState == AudioRecordingStates::STOP ) {
-        setAudioState( AudioRecordingStates::SPEECH_TO_TEXT );
-    }
 }
 
 void Recorder::draw( int x, int y, float width, float height )
@@ -115,20 +101,11 @@ void Recorder::drawDebug()
 {
     ofSetColor( 255, 255, 220 );
 
-    if( mRecorderAud.isRecording() ) {
-        ofDrawBitmapStringHighlight( "audio duration: " + std::to_string( mRecorderAud.getRecordedAudioDuration( 30.0f ) ), 40, 70 );
-    }
-
     ofPushStyle();
     {
         ofDrawBitmapStringHighlight( "FPS: " + std::to_string( ofGetFrameRate() ), 10, 16 );
 
-        if( mRecorderAud.isRecording() ) {
-            ofSetColor( ofColor::red );
-        }
-        else {
-            ofSetColor( ofColor::green );
-        }
+       
         ofDrawCircle( ofPoint( 50, 70 ), 10 );
 
 
@@ -190,13 +167,6 @@ void Recorder::start()
 
 void Recorder::stop()
 {
-    if( !mRecorderAud.isRecording() ) {
-        ofLogError() << "Cant stop recording b/c it has not started!";
-        return;
-    }
-
-    //! stop audio, we need to call this in the same update loop that the thread is spawned hence
-    //! the state 'prep_stop'
     setAudioState( AudioRecordingStates::PREP_STOP );
 }
 
@@ -238,19 +208,12 @@ void Recorder::audioIn( ofSoundBuffer &input )
      }*/
 
     switch( mAudState ) {
-
-    case AudioRecordingStates::RECORDING: {
-        if( mRecorderAud.isRecording() ) {
-            mRecorderAud.addBuffer( input, 30.0f );
-        }
-        break;
-    }
+    case AudioRecordingStates::RECORDING: break;
     case AudioRecordingStates::PREP_STOP: {
         setAudioState( AudioRecordingStates::STOP );
         break;
     }
-    default:
-        break;
+    default: break;
     }
 }
 
@@ -265,23 +228,14 @@ void Recorder::setAudioState( AudioRecordingStates state )
         break;
     }
     case AudioRecordingStates::RECORDING: {
-
         translation = "";
         sentimentAnalysis = "";
-
-        // mVisitorAudioPath = mVisitorPath + "\\audio.mp3";
-        mVisitorAudioPath = mVisitorPath + "\\audio.wav";
-        mRecorderAud.setAudOutputPath( mVisitorAudioPath );
-        mRecorderAud.startCustomAudioRecord();
         break;
     }
     case AudioRecordingStates::PREP_STOP: {
         break;
     }
     case AudioRecordingStates::STOP: {
-        if( mRecorderAud.isRecording() )
-            mRecorderAud.stop();
-
         break;
     }
     case AudioRecordingStates::SPEECH_TO_TEXT: {
@@ -299,27 +253,12 @@ void Recorder::setAudioState( AudioRecordingStates state )
 
 void Recorder::translateSpeechToText()
 {
-    ofLogNotice() << "TRANSCRIBE AUDIO FILE";
-
-
-    string audioPath = mRootPath + mVisitorAudioPath;
-
-    ofLogNotice() << "Audio path: " << audioPath;
-
-    ofLogNotice() << "Transcribition command" << mBatPath + " " + mKeyPath + " " + audioPath;
-
-    translation = ofSystem( mBatPath + " " + mKeyPath + " " + audioPath );
-
-    translation.erase( remove( translation.begin(), translation.end(), '\n' ), translation.end() );
-
-
     ofLogNotice() << "Speech-to-text Result: " << translation;
 
     // NEED TO DO: save transcription to file
     ofJson text, json;
     text["text"] = translation;
     json.push_back( text );
-
     string textFile = mRootPath + mVisitorPath + "\\translation.json";
     ofSaveJson( textFile, json );
     setAudioState( AudioRecordingStates::SENTIMENT_ANALYSIS );

@@ -2,13 +2,14 @@
 
 #include "AppSettings.h"
 #include "ofMain.h"
-#include "ofxFFmpegRecorder.h"
-#include "AppSettings.h"
 
 class Recorder {
   public:
     Recorder();
     ~Recorder();
+
+    enum class AudioRecordingStates { IDLE, RECORDING, PREP_STOP, STOP, SPEECH_TO_TEXT, SENTIMENT_ANALYSIS, NUM_STATES };
+
 
     void setup( string recordingPath );
     void setupOptions();
@@ -21,18 +22,21 @@ class Recorder {
     void onExit( ofEventArgs &e );
 
     //! getters
-    string getVisitorPath() { return mVisitorPath; }
-    bool   getAudioEnabled() { return mAudio; }
-    bool   getIsRecordingVideo();
-    bool   getIsDoneProcessing();
-    string getSentimentPath() { return mVisitorSentimentPath; }
-    int    getMappedVolume();
-    float  getNormalizedVolume(); 
+    string                         getVisitorPath() { return mVisitorPath; }
+    bool                           getAudioEnabled() { return mAudio; }
+    bool                           getIsRecordingVideo();
+    bool                           getIsDoneProcessing();
+    string                         getSentimentPath() { return mVisitorSentimentPath; }
+    int                            getMappedVolume();
+    float                          getNormalizedVolume();
+    Recorder::AudioRecordingStates getState() { return mAudState; }
 
     //! setters
     void setAudioEnabled( bool enable ) { mAudio = enable; }
     void toggleAudio() { mAudio = !mAudio; }
     void resetVisitorPath() { mVisitorPath = ""; }
+    void setTranslation( string txt ) { translation = txt; }
+    void setAudioState( AudioRecordingStates state );
 
     //! outputs
     void start();
@@ -41,21 +45,11 @@ class Recorder {
 
   private:
     //! state management
-    /*
-    Notes:
-    - PREP_STOP is setup so that the individual ffmpeg pipes for audio and video are closed in the same
-      update function and thread they are opened on. i.e. Video stops in the update funciton and audio
-      stops in the audioin function.
-    */
-    enum class AudioRecordingStates { IDLE, RECORDING, PREP_STOP, STOP, SPEECH_TO_TEXT, SENTIMENT_ANALYSIS, NUM_STATES };
     AudioRecordingStates mAudState{ AudioRecordingStates::IDLE };
-    void                 setAudioState( AudioRecordingStates state );
 
     //! Paths
     string mRootPath{ "" };
-    string mBatPath{ "" };
-    string mKeyPath{ "" };
-    string mPythonFile{ "" }; 
+    string mPythonFile{ "" };
     string mRecordingPath{ "recordings\\" };
     string mVisitorPath{ "" };
     string mVisitorAudioPath{ "" };
@@ -63,7 +57,7 @@ class Recorder {
 
     //! audio
     ofSoundStream soundStream;
-    short *       shortBuffer;
+    short        *shortBuffer;
     vector<float> inputFrames;
     vector<float> left;
     vector<float> right;
@@ -74,15 +68,6 @@ class Recorder {
     bool          mAudio{ false }; // setDisableAudio
     float         mScaledVol{ 0.0f };
     float         mSmoothedVol{ 0.0f };
-
-    //! Recorders
-    ofxFFmpegRecorder mRecorderAud;
-
-    //! output pipe
-    FILE * mComebinedAudioVid;
-    string output_file{ "" };
-    string output_cmd{ "" };
-    void   openOutPipe();
 
     //! speech to text translate + sentiment
     void   translateSpeechToText();

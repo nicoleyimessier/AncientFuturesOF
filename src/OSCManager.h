@@ -3,41 +3,40 @@
 #include "ofMain.h"
 #include "ofxOsc.h"
 #include "ofxOscMessage.h"
+#include "ofxOscReceiver.h"
 #include "ofxOscSender.h"
 
 // listening port
-#define PORT 5000
+#define PORT 5150
 
 class OSCManager {
 
   public:
     OSCManager();
     ~OSCManager();
-    void setup( const string &serverIp,  // who to send  to
-        const string &        appId,     //
-        int                   txPort,    //
-        const string &        devIp = "" //
-    );
+    void setup( const string &serverIp, const string &appId, int txPort );
     void update( float dt );
     bool isRunning() const { return mRunning; }
-    void send( float value );
-
-    int getStartExpereince() { return startExperience; }
-    int getInProgress() { return inProgress; }
+    void sendFloat( float value );
+    void sendString( string txt );
+    int  getInProgress() { return inProgress; }
+    string getTranscription();
+    void   clearTxt(); 
 
   protected:
     bool   mRunning{ false };
     bool   mIsSetup{ false };
     string mServerIp; // who to send  to
-    string mDeviceIp; // my own IP
+    string mClientIp; // who to listen to
     string mAppId{ "APP" };
     int    mTxPort;
 
     ofxOscSender  oscTx; // to send to server
-    ofxOscMessage encodeOsc( float value ) const;
-
+    ofxOscMessage encodeOscFloat( float value ) const;
+    ofxOscMessage encodeOscString( string txt ) const;
 
     ofxOscReceiver receiver;
-    int            startExperience = 0;
+    string         transcript{ "" };
+    vector<string> allTxt; 
     bool           inProgress = false;
 };

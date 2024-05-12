@@ -30,9 +30,7 @@ void AppSettings::setup()
 
 					// paths
                     mRootPath = app.value( "root_path", "" );
-                    mBatPath = app.value( "bat_path", "" );
-                    mKeyPath = app.value( "key_path", "" );
-                    mSentimentPath = app.value( "key_path", "" );
+                    mSentimentPath = app.value( "sentiment_python_path", "" );
 
 				}
 				else

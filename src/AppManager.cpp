@@ -29,7 +29,7 @@ void AppManager::setup()
 
     if( configs().one().getUseOSC() ) {
         // setup osc manager
-        oscMan.setup( "192.168.1.4", "app", 4455, "" );
+        oscMan.setup( "127.0.0.1", "app", 5000 );
     }
 
     ofAddListener( ofEvents().keyPressed, this, &AppManager::onKeyPressed );
@@ -63,14 +63,15 @@ void AppManager::update( float dt )
             setAppState( AppStates::COUNTDOWN );
     }
 
-    if( mAppState == AppStates::IDLE && oscMan.getStartExpereince() ) {
-        oscMan.send( recorder.getNormalizedVolume() );
-    }
-    else if( mAppState == AppStates::COUNTDOWN && pMan.getDifference() > 3.0f ) {
+    if( mAppState == AppStates::COUNTDOWN && pMan.getDifference() > 3.0f ) {
         setAppState( AppStates::RECORDING );
     }
     else if( mAppState == AppStates::RECORDING && pMan.getTimer() > 20.0f ) {
         setAppState( AppStates::PROCESSING );
+    }
+    else if( mAppState == AppStates::PROCESSING && recorder.getState() == Recorder::AudioRecordingStates::STOP ) {
+        recorder.setTranslation( oscMan.getTranscription() );
+        recorder.setAudioState( Recorder::AudioRecordingStates::SPEECH_TO_TEXT );
     }
     else if( mAppState == AppStates::PROCESSING && recorder.getIsDoneProcessing() ) {
         setAppState( AppStates::ANIMATING );
@@ -100,12 +101,7 @@ void AppManager::draw()
     TS_STOP( "pMan draw" );
 
     TS_START( "recorder draw" );
-    if( configs().one().getUseOSC() ) {
-        recorder.drawAudio( oscMan.getStartExpereince() );
-    }
-    else {
-        recorder.drawAudio( 1 );
-    }
+    recorder.drawAudio( 1 );
     TS_STOP( "recorder draw" );
 
     if( configs().one().mAppDebug ) {
@@ -128,14 +124,12 @@ void AppManager::setAppState( AppStates state )
 
     switch( mAppState ) {
     case AppStates::IDLE: {
+        oscMan.clearTxt();
         pMan.setPage( Pages::INTRO );
         break;
     }
     case AppStates::COUNTDOWN: {
         pMan.setPage( Pages::COUNTDOWN );
-
-        if( configs().one().getUseOSC() )
-            oscMan.send( 0 );
 
         if( configs().one().getUseArduino() )
             arduino.sendRecording();
@@ -144,12 +138,13 @@ void AppManager::setAppState( AppStates state )
     case AppStates::RECORDING: {
         pMan.setPage( Pages::LISTENING );
         recorder.start();
+        oscMan.sendString( "record" );
         break;
     }
     case AppStates::PROCESSING: {
         pMan.setPage( Pages::PROCESSING );
         recorder.stop();
-
+        oscMan.sendString( "stopRecording" );
 
         if( configs().one().getUseArduino() )
             arduino.sendAnalyzing();
@@ -267,10 +262,15 @@ void AppManager::onKeyPressed( ofKeyEventArgs &e )
         arduino.sendVolumeData( 1 );
         break;
     case '8':
-        oscMan.send( 1.0f );
-        break;
-    case '9':
         setAppState( AppStates::STOPPING );
+        break;
+    case 'a':
+        oscMan.sendString( "record" );
+        break;
+    case 'b':
+        oscMan.sendString( "stopRecording" );
+        break;
+    case 'c':
         break;
     default:
         break;

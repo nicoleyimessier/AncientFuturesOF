@@ -8,21 +8,19 @@ OSCManager::~OSCManager()
 {
 }
 
-void OSCManager::setup( const string &serverIp, const string &appId, int txPort, const string &devIp )
+void OSCManager::setup( const string &serverIp, const string &appId, int txPort )
 {
-    mServerIp = devIp;
     mServerIp = serverIp;
     mTxPort = txPort;
 
     if( !mIsSetup ) {
         oscTx.setup( mServerIp, mTxPort );
+        receiver.setup( PORT );
         mIsSetup = true;
     }
     mRunning = true;
 
     ofLogNotice( "OSCManager" ) << "setup osc sender" << mServerIp << ": " << mTxPort;
-
-    receiver.setup( PORT );
 }
 
 
@@ -35,29 +33,62 @@ void OSCManager::update( float dt )
         receiver.getNextMessage( m );
 
         // check for start val
-        if( m.getAddress() == "/AF" ) {
+        if( m.getAddress() == "/ancient_futures" ) {
 
             // both the arguments are floats
-            startExperience = m.getArgAsInt( 0 );
+            allTxt.push_back( m.getArgAsString( 0 ) );
 
-            ofLogNotice() << "New message: " << ofGetElapsedTimef() << " " <<  startExperience;
+            ofLogNotice() << "New message: " << ofGetElapsedTimef() << " " << transcript;
         }
     }
 }
 
-void OSCManager::send(float value) 
+string OSCManager::getTranscription()
 {
-    const ofxOscMessage m = encodeOsc( value );
-    oscTx.sendMessage( m, false );
+    transcript = "";
+    for( int i = 0; i < allTxt.size(); i++ )
+        transcript += allTxt[i];
 
-    //ofLogNotice() << "Sending OSC";
+    return transcript;
 }
 
-ofxOscMessage OSCManager::encodeOsc( float value ) const
+void OSCManager::clearTxt()
+{
+    allTxt.clear();
+}
+
+
+void OSCManager::sendFloat( float value )
+{
+    const ofxOscMessage m = encodeOscFloat( value );
+    oscTx.sendMessage( m, false );
+
+    ofLogNotice() << "Sending OSC";
+}
+
+void OSCManager::sendString( string txt )
+{
+    const ofxOscMessage m = encodeOscString( txt );
+    oscTx.sendMessage( m, false );
+
+    ofLogNotice() << "Sending OSC";
+}
+
+ofxOscMessage OSCManager::encodeOscFloat( float value ) const
 {
     ofxOscMessage m;
-    m.setAddress( "/app" );
+    m.setAddress( "app" );
     m.addFloatArg( value );
+
+    return m;
+}
+
+
+ofxOscMessage OSCManager::encodeOscString( string txt ) const
+{
+    ofxOscMessage m;
+    m.setAddress( "app" );
+    m.addStringArg( txt );
 
     return m;
 }
