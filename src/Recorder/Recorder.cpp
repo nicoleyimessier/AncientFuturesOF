@@ -273,7 +273,7 @@ void Recorder::performSentimentAnalysis()
     string cmd = "set PATH=" + path;
     // ofLogNotice() << cmd;
     ofSystem( cmd );
-    cmd = mSentimentPath + " " + mApiKey + " " + translation + " " + mVisitorSentimentPath; 
+    cmd = mSentimentPath + " " + mApiKey + " \"" + translation + "\" " + mVisitorSentimentPath; 
     ofLogNotice() << cmd;
     sentimentAnalysis = ofSystem( cmd );
     ofLogNotice() << "Sentiment Analysis Result: " << sentimentAnalysis;

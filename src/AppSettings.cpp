@@ -27,6 +27,7 @@ void AppSettings::setup()
                     mUseOSC = app.value( "use_OSC", false );
 					mUseOSC = app.value( "use_OSC", false );
                     mArduinoPort = app.value( "arduino_port", "" ); 
+					mApiKey = app.value( "api_key", "" ); 
 
 					// paths
                     mRootPath = app.value( "root_path", "" );

@@ -27,7 +27,8 @@ class AppSettings final {
     bool   getTesting() const { return mTesting; }
     string getRootPath() const { return mRootPath; }
     string getArduinoPort() const { return mArduinoPort; }
-    string getSentimentScriptPath() const {return mSentimentPath; }
+    string getSentimentScriptPath() const { return mSentimentPath; }
+    string getAPIKey() const { return mApiKey; }
 
     // --- COLORS --- //
     ofColor bgColor = ofColor( 117, 95, 134 );
@@ -44,12 +45,13 @@ class AppSettings final {
     bool      mLogToFile{ true };
     bool      mUseMouse{ true };
     bool      mUseArduino{ false };
-    string    mArduinoPort{ "" }; 
+    string    mArduinoPort{ "" };
     bool      mMouseOn{ false };
     int       mWindowMode{ 8 };
     bool      mUseOSC{ false };
     string    mRootPath{ "" };
-    string mSentimentPath{ "" }; 
+    string    mSentimentPath{ "" };
+    string    mApiKey{ "" };
     glm::vec2 mAppSize{ 1920.0f, 1080.0f };
 
 

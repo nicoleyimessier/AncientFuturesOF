@@ -15,8 +15,8 @@ void AppManager::setup()
     // set up app settings
 
     //! setup recorder
-    // recorder.setup( "D:\\recordings\\" );
     recorder.setup( ofToDataPath( "recordings" ) );
+    recorder.setApiKey( configs().one().getAPIKey() ); 
 
     //! setup Arduino
     if( configs().one().getUseArduino() ) {
