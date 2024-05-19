@@ -16,7 +16,7 @@ void AppManager::setup()
 
     //! setup recorder
     recorder.setup( ofToDataPath( "recordings" ) );
-    recorder.setApiKey( configs().one().getAPIKey() ); 
+    recorder.setApiKey( configs().one().getAPIKey() );
 
     //! setup Arduino
     if( configs().one().getUseArduino() ) {
@@ -63,34 +63,56 @@ void AppManager::update( float dt )
             setAppState( AppStates::COUNTDOWN );
     }
 
-    if( mAppState == AppStates::COUNTDOWN && pMan.getDifference() > 3.0f ) {
-        setAppState( AppStates::RECORDING );
+    switch( mAppState ) {
+    case AppStates::IDLE:
+        break;
+    case AppStates::COUNTDOWN: {
+
+        if( pMan.getDifference() > 3.0f )
+            setAppState( AppStates::RECORDING );
+
+        break;
     }
-    else if( mAppState == AppStates::RECORDING && pMan.getTimer() > 10.0f ) {
-        setAppState( AppStates::PROCESSING );
+    case AppStates::RECORDING: {
+
+        if( pMan.getTimer() > 10.0f )
+            setAppState( AppStates::PROCESSING );
+
+        // if we are recording, send volume data to the arduino
+        arduino.sendVolumeData( recorder.getMappedVolume() );
+
+
+        break;
     }
-    else if( mAppState == AppStates::PROCESSING && recorder.getState() == Recorder::AudioRecordingStates::STOP ) {
-        recorder.setTranslation( oscMan.getTranscription() );
-        recorder.setAudioState( Recorder::AudioRecordingStates::SPEECH_TO_TEXT );
+    case AppStates::PROCESSING: {
+
+        if( recorder.getState() == Recorder::AudioRecordingStates::STOP ) {
+            recorder.setTranslation( oscMan.getTranscription() );
+            recorder.setAudioState( Recorder::AudioRecordingStates::SPEECH_TO_TEXT );
+        }
+        else if( mAppState == AppStates::PROCESSING && recorder.getIsDoneProcessing() ) {
+            setAppState( AppStates::ANIMATING );
+        }
+
+        break;
     }
-    else if( mAppState == AppStates::PROCESSING && recorder.getIsDoneProcessing() ) {
-        setAppState( AppStates::ANIMATING );
-    }
-    else if( mAppState == AppStates::ANIMATING ) {
+    case AppStates::ANIMATING: {
         float elapsedTime = ofGetElapsedTimef() - startAnimationTime;
 
         if( elapsedTime > animationTime )
             setAppState( AppStates::STOPPING );
+        break;
     }
+    case AppStates::STOPPING: {
 
-    // Time out
-    if( mAppState == AppStates::STOPPING && ( ofGetElapsedTimef() - startTyTimer ) > tyTimeDur ) {
-        setAppState( AppStates::IDLE );
+        float elapsed = ofGetElapsedTimef() - startTyTimer;
+        if( elapsed > tyTimeDur )
+            setAppState( AppStates::IDLE );
+
+        break;
     }
-
-    // if we are recording, send volume data to the arduino
-    if( mAppState == AppStates::RECORDING ) {
-        arduino.sendVolumeData( recorder.getMappedVolume() );
+    default:
+        break;
     }
 }
 
