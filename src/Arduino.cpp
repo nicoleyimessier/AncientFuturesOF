@@ -29,19 +29,8 @@ void Arduino::update()
 {
     if( bSendSerialMessage ) {
 
-        /*
-            // (1) write the letter "a" to serial:
-            if( sendPostiveAnimation )
-                serial.writeByte( 'p' );
-            else if( sendNegativeAnimation )
-                serial.writeByte( 'n' );
-            else if( sendNetrualAnimation )
-                serial.writeByte( 'c' );
-                    */
-
-
         for( int i = 0; i < mTxt.size(); i++ ) {
-            serial.writeByte( mTxt[i]); 
+            serial.writeByte( mTxt[i] );
         }
 
         serial.writeByte( '\n' );
@@ -130,39 +119,13 @@ void Arduino::drawDebug()
     ofDrawBitmapString( msg, ofGetWidth() / 2, 100 );
 }
 
-void Arduino::sendSentimentMsg( float pos, float neg, float netrual )
+void Arduino::sendSentimentMsg( string txt )
 {
-
-    if( pos > neg ) {
-        if( pos > netrual ) {
-            sendPostiveAnimation = true;
-            ofLogNotice() << "Send positive animation: " << sendPostiveAnimation;
-        }
-        else {
-            sendNetrualAnimation = true;
-            ofLogNotice() << "Send netrual animation: " << sendNetrualAnimation;
-        }
-    }
-    else if( neg > netrual ) {
-        sendNegativeAnimation = true;
-        ofLogNotice() << "Send negative animation: " << sendNegativeAnimation;
-    }
-    else {
-        sendNetrualAnimation = true;
-        ofLogNotice() << "Send netrual animation: " << sendNetrualAnimation;
-    }
-
-
-    bSendSerialMessage = true;
-}
-
-void Arduino::sendSerialString( string txt )
-{
-
     mTxt = txt;
     bSendSerialMessage = true;
-}
 
+    ofLogNotice() << "Send mTxt";
+}
 
 void Arduino::sendRecording()
 {
@@ -184,9 +147,6 @@ void Arduino::resetAllMsgValues()
 {
     sendRecordingFlag = false;
     sendAnalyzingFlag = false;
-    sendPostiveAnimation = false;
-    sendNegativeAnimation = false;
-    sendNetrualAnimation = false;
     sendVolumeFlag = false;
 }
 

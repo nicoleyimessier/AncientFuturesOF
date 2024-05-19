@@ -175,11 +175,12 @@ void AppManager::setAppState( AppStates state )
     case AppStates::ANIMATING: {
         pMan.setPage( Pages::ANIMATING );
 
+        string rgb = "";
+
         // open json file
         if( ofFile::doesFileExist( recorder.getSentimentPath() ) ) {
             ofLogNotice() << "Found  sentiment analysis " << recorder.getSentimentPath() << ", loading";
 
-            glm::vec3 rgb;
 
             try {
                 ofJson json = ofLoadJson( recorder.getSentimentPath() );
@@ -190,9 +191,11 @@ void AppManager::setAppState( AppStates state )
                     for( int i = 0; i < json["emotion"]["color"].size(); i++ ) {
 
                         if( !json["emotion"]["color"][i]["rgb"].is_null() ) {
-                            rgb.x = json["emotion"]["color"][i]["rgb"][0];
-                            rgb.y = json["emotion"]["color"][i]["rgb"][1];
-                            rgb.z = json["emotion"]["color"][i]["rgb"][2];
+
+                            for( int j = 0; j < json["emotion"]["color"][i]["rgb"].size(); j++ ) {
+                                int value = json["emotion"]["color"][i]["rgb"][j]; 
+                                rgb += ofToString(value) + ",";
+                            }
                         }
                     }
                 }
@@ -205,8 +208,8 @@ void AppManager::setAppState( AppStates state )
             ofLogError() << "Sentiment file " << recorder.getSentimentPath() << " does not exists!";
         }
 
-        /*if( configs().one().getUseArduino() )
-            arduino.sendSentimentMsg( pos, neg, neu );*/
+        if( configs().one().getUseArduino() )
+            arduino.sendSentimentMsg( rgb );
 
         startAnimationTime = ofGetElapsedTimef();
         break;
@@ -270,13 +273,13 @@ void AppManager::onKeyPressed( ofKeyEventArgs &e )
         arduino.sendAnalyzing();
         break;
     case '3':
-        arduino.sendSentimentMsg( 1.0f, 0.0f, 0.0f );
+        arduino.sendSentimentMsg( "255,0,255,0,255,0" );
         break;
     case '4':
-        arduino.sendSerialString( "0,0,255,0,255,0" ); 
+        arduino.sendSentimentMsg( "0,0,255,0,255,0" );
         break;
     case '5':
-        arduino.sendSerialString( "0,192,255,255,0,255" );
+        arduino.sendSentimentMsg( "0,192,255,255,0,255" );
         break;
     case '6':
         arduino.sendStopMsg();
