@@ -29,7 +29,7 @@ void AppManager::setup()
 
     if( configs().one().getUseOSC() ) {
         // setup osc manager
-        oscMan.setup( "127.0.0.1", "app", 5000 );
+        oscMan.setup( "127.0.0.1", "app", configs().one().getTxPort(), configs().one().getRxPort() );
     }
 
     ofAddListener( ofEvents().keyPressed, this, &AppManager::onKeyPressed );

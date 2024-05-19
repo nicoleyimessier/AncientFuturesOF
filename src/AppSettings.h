@@ -29,6 +29,8 @@ class AppSettings final {
     string getArduinoPort() const { return mArduinoPort; }
     string getSentimentScriptPath() const { return mSentimentPath; }
     string getAPIKey() const { return mApiKey; }
+    int    getRxPort() const { return mRxPort; }
+    int    getTxPort() const { return mTxPort; }
 
     // --- COLORS --- //
     ofColor bgColor = ofColor( 117, 95, 134 );
@@ -52,6 +54,8 @@ class AppSettings final {
     string    mRootPath{ "" };
     string    mSentimentPath{ "" };
     string    mApiKey{ "" };
+    int       mRxPort{ 5000 };
+    int       mTxPort{ 5005 };
     glm::vec2 mAppSize{ 1920.0f, 1080.0f };
 
 

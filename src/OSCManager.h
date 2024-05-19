@@ -6,15 +6,13 @@
 #include "ofxOscReceiver.h"
 #include "ofxOscSender.h"
 
-// listening port
-#define PORT 5150
 
 class OSCManager {
 
   public:
     OSCManager();
     ~OSCManager();
-    void setup( const string &serverIp, const string &appId, int txPort );
+    void setup( const string &serverIp, const string &appId, int txPort, int rxPort);
     void update( float dt );
     bool isRunning() const { return mRunning; }
     void sendFloat( float value );

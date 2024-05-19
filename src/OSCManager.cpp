@@ -8,14 +8,14 @@ OSCManager::~OSCManager()
 {
 }
 
-void OSCManager::setup( const string &serverIp, const string &appId, int txPort )
+void OSCManager::setup( const string &serverIp, const string &appId, int txPort, int rxPort )
 {
     mServerIp = serverIp;
     mTxPort = txPort;
 
     if( !mIsSetup ) {
         oscTx.setup( mServerIp, mTxPort );
-        receiver.setup( PORT );
+        receiver.setup( rxPort );
         mIsSetup = true;
     }
     mRunning = true;
