@@ -90,7 +90,7 @@ void AppManager::update( float dt )
             recorder.setTranslation( oscMan.getTranscription() );
             recorder.setAudioState( Recorder::AudioRecordingStates::SPEECH_TO_TEXT );
         }
-        else if( mAppState == AppStates::PROCESSING && recorder.getIsDoneProcessing() ) {
+        else if( recorder.getIsDoneProcessing() ) {
             setAppState( AppStates::ANIMATING );
         }
 
@@ -175,26 +175,27 @@ void AppManager::setAppState( AppStates state )
     case AppStates::ANIMATING: {
         pMan.setPage( Pages::ANIMATING );
 
-        float pos = 0.0f;
-        float neg = 0.0f;
-        float neu = 0.0f;
-
         // open json file
         if( ofFile::doesFileExist( recorder.getSentimentPath() ) ) {
             ofLogNotice() << "Found  sentiment analysis " << recorder.getSentimentPath() << ", loading";
+
+            glm::vec3 rgb;
 
             try {
                 ofJson json = ofLoadJson( recorder.getSentimentPath() );
                 // ofLogNotice() << "JSON DUMP: " << json.dump();
 
-                if( !json["neg"].is_null() )
-                    neg = json["neg"];
+                if( !json["emotion"]["color"].is_null() ) {
 
-                if( !json["pos"].is_null() )
-                    pos = json["pos"];
+                    for( int i = 0; i < json["emotion"]["color"].size(); i++ ) {
 
-                if( !json["neu"].is_null() )
-                    neu = json["neu"];
+                        if( !json["emotion"]["color"][i]["rgb"].is_null() ) {
+                            rgb.x = json["emotion"]["color"][i]["rgb"][0];
+                            rgb.y = json["emotion"]["color"][i]["rgb"][1];
+                            rgb.z = json["emotion"]["color"][i]["rgb"][2];
+                        }
+                    }
+                }
             }
             catch( exception &exc ) {
                 ofLogError() << "Unable to load json file";
@@ -204,8 +205,8 @@ void AppManager::setAppState( AppStates state )
             ofLogError() << "Sentiment file " << recorder.getSentimentPath() << " does not exists!";
         }
 
-        if( configs().one().getUseArduino() )
-            arduino.sendSentimentMsg( pos, neg, neu );
+        /*if( configs().one().getUseArduino() )
+            arduino.sendSentimentMsg( pos, neg, neu );*/
 
         startAnimationTime = ofGetElapsedTimef();
         break;
@@ -272,10 +273,10 @@ void AppManager::onKeyPressed( ofKeyEventArgs &e )
         arduino.sendSentimentMsg( 1.0f, 0.0f, 0.0f );
         break;
     case '4':
-        arduino.sendSentimentMsg( 0.0f, 1.0f, 0.0f );
+        arduino.sendSerialString( "0,0,255,0,255,0" ); 
         break;
     case '5':
-        arduino.sendSentimentMsg( 0.0f, 0.0f, 1.0f );
+        arduino.sendSerialString( "0,192,255,255,0,255" );
         break;
     case '6':
         arduino.sendStopMsg();

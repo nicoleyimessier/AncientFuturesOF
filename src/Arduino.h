@@ -6,12 +6,13 @@ class Arduino {
     Arduino();
     ~Arduino();
 
-    void setup(string port);
+    void setup( string port );
     void update();
     void drawDebug();
 
     // Communcations
     void sendSentimentMsg( float pos, float neg, float netrual );
+    void sendSerialString( string txt );
     void sendRecording();
     void sendAnalyzing();
     void sendStopMsg();
@@ -26,6 +27,7 @@ class Arduino {
     int      nTimesRead{ 0 };             // how many times did we read?
     float    readTime{ 0.0f };
     int      mVolume{ 0 };
+    string   mTxt{ "" };
     ofSerial serial;
 
     // NEED TO DO: make into enum state machine

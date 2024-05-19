@@ -8,17 +8,17 @@ Arduino::~Arduino()
 {
 }
 
-void Arduino::setup(string port)
+void Arduino::setup( string port )
 {
 
     serial.listDevices();
     vector<ofSerialDeviceInfo> deviceList = serial.getDeviceList();
 
-    //cout << deviceList[0].getDeviceName();
+    // cout << deviceList[0].getDeviceName();
     int baud = 9600;
     // serial.setup( 1, baud ); // open the first device
-    //serial.setup( "COM3", baud ); 
-     serial.setup( port, baud ); // windows example
+    // serial.setup( "COM3", baud );
+    serial.setup( port, baud ); // windows example
     // serial.setup("/dev/tty.usbserial-A4001JEC", baud); // mac osx example
     // serial.setup("/dev/ttyUSB0", baud); //linux example
 
@@ -29,13 +29,20 @@ void Arduino::update()
 {
     if( bSendSerialMessage ) {
 
-        // (1) write the letter "a" to serial:
-        if( sendPostiveAnimation )
-            serial.writeByte( 'p' );
-        else if( sendNegativeAnimation )
-            serial.writeByte( 'n' );
-        else if( sendNetrualAnimation )
-            serial.writeByte( 'c' );
+        /*
+            // (1) write the letter "a" to serial:
+            if( sendPostiveAnimation )
+                serial.writeByte( 'p' );
+            else if( sendNegativeAnimation )
+                serial.writeByte( 'n' );
+            else if( sendNetrualAnimation )
+                serial.writeByte( 'c' );
+                    */
+
+
+        for( int i = 0; i < mTxt.size(); i++ ) {
+            serial.writeByte( mTxt[i]); 
+        }
 
         serial.writeByte( '\n' );
         bSendSerialMessage = false;
@@ -62,22 +69,21 @@ void Arduino::update()
         string volume = ofToString( mVolume );
 
         serial.writeByte( 'v' );
-        
+
         for( auto &letter : volume ) {
             serial.writeByte( (char)letter );
         }
-        
+
 
         serial.writeByte( '\n' );
         serial.flush();
-        //ofLogNotice() << "send volume " << volume;
+        // ofLogNotice() << "send volume " << volume;
         sendVolumeFlag = false;
         resetAllMsgValues();
-
     }
 
 
-     // (2) read
+    // (2) read
     // now we try to read 3 bytes
     // since we might not get them all the time 4 - but sometimes 0, 6, or something else,
     // we will try to read three bytes, as much as we can
@@ -149,6 +155,14 @@ void Arduino::sendSentimentMsg( float pos, float neg, float netrual )
 
     bSendSerialMessage = true;
 }
+
+void Arduino::sendSerialString( string txt )
+{
+
+    mTxt = txt;
+    bSendSerialMessage = true;
+}
+
 
 void Arduino::sendRecording()
 {
