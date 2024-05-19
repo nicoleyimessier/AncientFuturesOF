@@ -14,7 +14,6 @@ void AppSettings::setup()
 			// Parse the JSON.
 			if (app_settings.contains("configurable")) {
 				const auto& configurable = app_settings["configurable"];
-
 				if (configurable.contains("app")) {
 					const auto& app = configurable.value("app", ofJson{});
 					mWindowMode = app["window_mode"];
@@ -26,11 +25,12 @@ void AppSettings::setup()
 					mAppSize.y = app.value("app_height", 500);
                     mUseArduino = app.value( "use_arduino", false );
                     mUseOSC = app.value( "use_OSC", false );
-
+					mUseOSC = app.value( "use_OSC", false );
+                    mArduinoPort = app.value( "arduino_port", "" ); 
 
 					// paths
                     mRootPath = app.value( "root_path", "" );
-                    mSentimentPath = app.value( "sentiment_python_path", "" );
+                    mSentimentPath = app.value( "sentiment_path", "" );
 
 				}
 				else

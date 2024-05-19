@@ -12,7 +12,7 @@ void ofApp::setup()
     ofAddListener( ss.setupChanged, this, &ofApp::setupChanged );
     // ss.setup( ofGetWidth(), ofGetHeight(), ofxScreenSetup::FULL_ONE_MONITOR );
     ss.setup( ofGetWidth(), ofGetHeight(), ofxScreenSetup::WINDOWED );
-    
+
 
     ofSetFrameRate( 30 );
     ofSetVerticalSync( true );
@@ -33,7 +33,7 @@ void ofApp::setup()
 
     // Time stamps
     TIME_SAMPLE_SET_FRAMERATE( 30.0f ); // specify a target framerate
-    TIME_SAMPLE_DISABLE(); 
+    TIME_SAMPLE_DISABLE();
 }
 
 //--------------------------------------------------------------
@@ -62,6 +62,11 @@ void ofApp::keyReleased( int key )
         break;
     case 's': {
         ss.cycleToNextScreenMode();
+        break;
+    }
+    case ' ': {
+
+        ofLogNotice() << "HELLO" ; 
         break;
     }
     default:

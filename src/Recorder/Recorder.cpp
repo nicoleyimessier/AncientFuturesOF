@@ -40,7 +40,7 @@ void Recorder::setup( string recordingPath )
     mRecordingPath = path + "\\";
 
     mRootPath = configs().one().getRootPath();
-    mPythonFile = configs().one().getPythonSentimentPath(); 
+    mSentimentPath = configs().one().getSentimentScriptPath(); 
     // Setup audio buffer
     int bufferSize = 1024;
     inputFrames.assign( bufferSize, 0.0 );
@@ -273,7 +273,7 @@ void Recorder::performSentimentAnalysis()
     string cmd = "set PATH=" + path;
     // ofLogNotice() << cmd;
     ofSystem( cmd );
-    cmd = "python " + mPythonFile + " " + "\"" + translation + "\"" + " " + "\"" + mVisitorSentimentPath + "\"";
+    cmd = mSentimentPath + " " + mApiKey + " " + translation + " " + mVisitorSentimentPath; 
     ofLogNotice() << cmd;
     sentimentAnalysis = ofSystem( cmd );
     ofLogNotice() << "Sentiment Analysis Result: " << sentimentAnalysis;

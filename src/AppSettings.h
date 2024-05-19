@@ -26,7 +26,8 @@ class AppSettings final {
     bool   getUseOSC() const { return mUseOSC; }
     bool   getTesting() const { return mTesting; }
     string getRootPath() const { return mRootPath; }
-    string getPythonSentimentPath() const {return mSentimentPath; }
+    string getArduinoPort() const { return mArduinoPort; }
+    string getSentimentScriptPath() const {return mSentimentPath; }
 
     // --- COLORS --- //
     ofColor bgColor = ofColor( 117, 95, 134 );
@@ -43,6 +44,7 @@ class AppSettings final {
     bool      mLogToFile{ true };
     bool      mUseMouse{ true };
     bool      mUseArduino{ false };
+    string    mArduinoPort{ "" }; 
     bool      mMouseOn{ false };
     int       mWindowMode{ 8 };
     bool      mUseOSC{ false };

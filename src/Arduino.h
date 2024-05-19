@@ -6,7 +6,7 @@ class Arduino {
     Arduino();
     ~Arduino();
 
-    void setup();
+    void setup(string port);
     void update();
     void drawDebug();
 

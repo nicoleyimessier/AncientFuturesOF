@@ -8,7 +8,7 @@ Arduino::~Arduino()
 {
 }
 
-void Arduino::setup()
+void Arduino::setup(string port)
 {
 
     serial.listDevices();
@@ -18,7 +18,7 @@ void Arduino::setup()
     int baud = 9600;
     // serial.setup( 1, baud ); // open the first device
     //serial.setup( "COM3", baud ); 
-     serial.setup( "COM4", baud ); // windows example
+     serial.setup( port, baud ); // windows example
     // serial.setup("/dev/tty.usbserial-A4001JEC", baud); // mac osx example
     // serial.setup("/dev/ttyUSB0", baud); //linux example
 

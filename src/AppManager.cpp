@@ -20,7 +20,7 @@ void AppManager::setup()
 
     //! setup Arduino
     if( configs().one().getUseArduino() ) {
-        arduino.setup();
+        arduino.setup( configs().one().getArduinoPort() );
         arduino.sendStopMsg();
     }
 
@@ -66,7 +66,7 @@ void AppManager::update( float dt )
     if( mAppState == AppStates::COUNTDOWN && pMan.getDifference() > 3.0f ) {
         setAppState( AppStates::RECORDING );
     }
-    else if( mAppState == AppStates::RECORDING && pMan.getTimer() > 20.0f ) {
+    else if( mAppState == AppStates::RECORDING && pMan.getTimer() > 10.0f ) {
         setAppState( AppStates::PROCESSING );
     }
     else if( mAppState == AppStates::PROCESSING && recorder.getState() == Recorder::AudioRecordingStates::STOP ) {

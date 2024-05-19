@@ -37,6 +37,7 @@ class Recorder {
     void resetVisitorPath() { mVisitorPath = ""; }
     void setTranslation( string txt ) { translation = txt; }
     void setAudioState( AudioRecordingStates state );
+    void setApiKey( string key ) { mApiKey = key; }
 
     //! outputs
     void start();
@@ -48,8 +49,9 @@ class Recorder {
     AudioRecordingStates mAudState{ AudioRecordingStates::IDLE };
 
     //! Paths
+    string mApiKey{ "" };
     string mRootPath{ "" };
-    string mPythonFile{ "" };
+    string mSentimentPath{ "" };
     string mRecordingPath{ "recordings\\" };
     string mVisitorPath{ "" };
     string mVisitorAudioPath{ "" };
