@@ -93,10 +93,10 @@ void ofApp::touchDown( ofTouchEventArgs &touch )
 //--------------------------------------------------------------
 void ofApp::touchUp( ofTouchEventArgs &touch )
 {
-    if( !configs().getUseMouse() ) {
+    /*if( !configs().getUseMouse() ) {
         ofLogNotice() << "touch up: " << touch.x << ", " << touch.y << ", id: " << touch.id;
         app.nextState();
-    }
+    }*/
 }
 
 

@@ -88,9 +88,9 @@ void Recorder::setupSoundBuffer()
 
 void Recorder::update()
 {
-    // ofLogNotice() << "mSmoothedVol: " << mSmoothedVol;
+   // ofLogNotice() << "mSmoothedVol: " << mSmoothedVol;
 
-    mScaledVol = ofMap( mSmoothedVol, 0.0, 0.05, 0.1, 1.0, true );
+    mScaledVol = ofMap( mSmoothedVol, 0.0, 0.03, 0.1, 1.0, true );
 }
 
 void Recorder::draw( int x, int y, float width, float height )
@@ -292,10 +292,10 @@ bool Recorder::getIsDoneProcessing()
 
 int Recorder::getMappedVolume()
 {
-    return (int)ofMap( mSmoothedVol, 0.0, 0.05, 0.0, 255.0, true );
+    return (int)ofMap( mSmoothedVol, 0.0, 0.03, 0.0, 255.0, true );
 }
 
 float Recorder::getNormalizedVolume()
 {
-    return ofMap( mSmoothedVol, 0.0, 0.05, 0.0, 1.0, true );
+    return ofMap( mSmoothedVol, 0.0, 0.03, 0.0, 1.0, true );
 }

@@ -67,16 +67,19 @@ void AppManager::update( float dt )
     case AppStates::IDLE:
         break;
     case AppStates::COUNTDOWN: {
-
+        
         if( pMan.getDifference() > 3.0f )
             setAppState( AppStates::RECORDING );
-
+        
         break;
     }
     case AppStates::RECORDING: {
-
+        
+        /*
+        // Un comment for timed experience
         if( pMan.getTimer() > 10.0f )
             setAppState( AppStates::PROCESSING );
+        */ 
 
         // if we are recording, send volume data to the arduino
         arduino.sendVolumeData( recorder.getMappedVolume() );
@@ -193,8 +196,8 @@ void AppManager::setAppState( AppStates state )
                         if( !json["emotion"]["color"][i]["rgb"].is_null() ) {
 
                             for( int j = 0; j < json["emotion"]["color"][i]["rgb"].size(); j++ ) {
-                                int value = json["emotion"]["color"][i]["rgb"][j]; 
-                                rgb += ofToString(value) + ",";
+                                int value = json["emotion"]["color"][i]["rgb"][j];
+                                rgb += ofToString( value ) + ",";
                             }
                         }
                     }
@@ -266,32 +269,8 @@ string AppManager::getAppStateString()
 void AppManager::onKeyPressed( ofKeyEventArgs &e )
 {
     switch( e.key ) {
-    case '1':
-        arduino.sendRecording();
-        break;
-    case '2':
-        arduino.sendAnalyzing();
-        break;
-    case '3':
-        arduino.sendSentimentMsg( "255,0,255,0,255,0" );
-        break;
-    case '4':
-        arduino.sendSentimentMsg( "0,0,255,0,255,0" );
-        break;
-    case '5':
-        arduino.sendSentimentMsg( "0,192,255,255,0,255" );
-        break;
-    case '6':
-        arduino.sendStopMsg();
-        break;
-    case '7':
-        arduino.sendVolumeData( 1 );
-        break;
-    case '8':
-        setAppState( AppStates::STOPPING );
-        break;
-    case 'a':
-        oscMan.sendString( "record" );
+    case ' ':
+        nextState();
         break;
     case 'b':
         oscMan.sendString( "stopRecording" );

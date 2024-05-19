@@ -52,8 +52,8 @@ void PageManager::draw()
         page.drawCountdown();
         break;
     case Pages::LISTENING:
-        page.drawCountdown();
-        page.drawTimer();
+        //page.drawCountdown();
+        //page.drawTimer();
         break;
     case Pages::PROCESSING:
         page.drawCountdown();
