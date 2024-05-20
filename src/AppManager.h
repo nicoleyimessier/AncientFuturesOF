@@ -9,6 +9,8 @@
 #include "ofMain.h"
 #include "ofxTimeMeasurements.h"
 
+#include <random>
+
 using namespace AncientFutures;
 
 class AppManager {
@@ -46,7 +48,7 @@ class AppManager {
     Arduino arduino;
 
     // Animation timer
-    float startAnimationTime{ 0.0f };
+    float       startAnimationTime{ 0.0f };
     float const animationTime{ 10.0f };
 
     // CLOSING TIMER
@@ -61,7 +63,7 @@ class AppManager {
     float durationTesting{ 10.0f };
 
     // json sentiment parser
-    string parseSentiment(string path); 
+    string parseSentiment( string path );
 
     // ambient animations
     float          startAmbientTime{ 0.0f };
@@ -71,4 +73,9 @@ class AppManager {
     int            numAmbientEmotions{ 200 };
     int            ambientIndex{ 0 };
     vector<string> paths;
+    bool           individualAmbient{ true };
+    void           updateAmbientState();
+
+    // LED ANIMATION SETUP
+    bool ledConfiguration{ false };
 };

@@ -66,6 +66,8 @@ void AppManager::setup()
         ofLogNotice() << path << " does not exists!";
     }
 
+    std::shuffle( std::begin( paths ), std::end( paths ), std::random_device{} );
+
 
     //! setup recorder
     recorder.setup( ofToDataPath( "recordings" ) );
@@ -95,6 +97,11 @@ void AppManager::update( float dt )
         TS_START( "arduino" );
         arduino.update();
         TS_STOP( "arduino" );
+
+        if( ledConfiguration ) {
+
+            return;
+        }
     }
 
     TS_START( "recorder" );
@@ -120,14 +127,24 @@ void AppManager::update( float dt )
     case AppStates::IDLE: {
 
         float elapsedIndivudual = ofGetElapsedTimef() - startAmbientIndividualTime;
-        if( elapsedIndivudual > individualAmbientDur ) {
+        float ambientElapsed = ofGetElapsedTimef() - startAmbientTime;
 
-            ( ambientIndex < paths.size() - 1 ) ? ambientIndex++ : ambientIndex = 0;
+        if( ambientElapsed > ambientDuration ) {
+            updateAmbientState();
+        }
 
-            if( configs().one().getUseArduino() )
-                arduino.sendSentimentMsg( parseSentiment( paths[ambientIndex] ) );
+        if( individualAmbient ) {
 
-            startAmbientIndividualTime = ofGetElapsedTimef();
+            // Individual emotion animation
+            if( elapsedIndivudual > individualAmbientDur ) {
+
+                ( ambientIndex < paths.size() - 1 ) ? ambientIndex++ : ambientIndex = 0;
+
+                if( configs().one().getUseArduino() )
+                    arduino.sendSentimentMsg( parseSentiment( paths[ambientIndex] ) );
+
+                startAmbientIndividualTime = ofGetElapsedTimef();
+            }
         }
 
         break;
@@ -217,15 +234,7 @@ void AppManager::setAppState( AppStates state )
     case AppStates::IDLE: {
         oscMan.clearTxt();
         pMan.setPage( Pages::INTRO );
-
-        // Set up ambient animation
-        ( ambientIndex < paths.size() - 1 ) ? ambientIndex++ : ambientIndex = 0;
-
-        if( configs().one().getUseArduino() )
-            arduino.sendSentimentMsg( parseSentiment( paths[ambientIndex] ) );
-
-        startAmbientIndividualTime = ofGetElapsedTimef();
-
+        updateAmbientState();
         break;
     }
     case AppStates::COUNTDOWN: {
@@ -270,6 +279,27 @@ void AppManager::setAppState( AppStates state )
     default:
         break;
     }
+}
+
+void AppManager::updateAmbientState()
+{
+    // update state
+    individualAmbient = !individualAmbient;
+
+    if( individualAmbient ) {
+        // Set up ambient animation
+        ( ambientIndex < paths.size() - 1 ) ? ambientIndex++ : ambientIndex = 0;
+
+        if( configs().one().getUseArduino() )
+            arduino.sendSentimentMsg( parseSentiment( paths[ambientIndex] ) );
+
+        startAmbientIndividualTime = ofGetElapsedTimef();
+    }
+    else {
+        if( configs().one().getUseArduino() )
+            arduino.sendSentimentMsg( "255,95,50,255,255,255" );
+    }
+    startAmbientTime = ofGetElapsedTimef();
 }
 
 string AppManager::parseSentiment( string path )
@@ -356,6 +386,17 @@ void AppManager::onKeyPressed( ofKeyEventArgs &e )
         oscMan.sendString( "stopRecording" );
         break;
     case 'c':
+        break;
+    case '1':
+        // red to blue
+        arduino.sendSentimentMsg( "255,0,0,255,0,0" );
+        break;
+    case '2':
+        // pink to green
+        arduino.sendSentimentMsg( "255,0,255,124,252,0" );
+        break;
+    case '3':
+        arduino.sendSentimentMsg( "255,0,0,0,0,255" );
         break;
     default:
         break;
