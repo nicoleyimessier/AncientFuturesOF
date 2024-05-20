@@ -17,6 +17,7 @@ class Arduino {
     void sendStopMsg();
     void resetAllMsgValues();
     void sendVolumeData( int volume );
+    void sendSerialString(string txt); 
 
   private:
     bool     bSendSerialMessage{ false }; // a flag for sending serial
@@ -27,6 +28,7 @@ class Arduino {
     float    readTime{ 0.0f };
     int      mVolume{ 0 };
     string   mTxt{ "" };
+    string   serialString{ "" };
     ofSerial serial;
 
     // NEED TO DO: make into enum state machine
@@ -34,4 +36,5 @@ class Arduino {
     bool sendAnalyzingFlag{ false };
     bool sendStopAnimation{ true };
     bool sendVolumeFlag{ false };
+    bool sendString{ false };
 };

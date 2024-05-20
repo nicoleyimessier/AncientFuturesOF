@@ -70,6 +70,15 @@ void Arduino::update()
         sendVolumeFlag = false;
         resetAllMsgValues();
     }
+    else if( sendString ) {
+        for( auto &letter : serialString ) {
+            serial.writeByte( (char)letter );
+        }
+
+        serial.writeByte( '\n' );
+        sendString = false;
+        resetAllMsgValues();
+    }
 
 
     // (2) read
@@ -124,7 +133,8 @@ void Arduino::sendSentimentMsg( string txt )
     mTxt = txt;
     bSendSerialMessage = true;
 
-    ofLogNotice() << "Send mTxt " << txt; ;
+    ofLogNotice() << "Send mTxt " << txt;
+   
 }
 
 void Arduino::sendRecording()
@@ -148,10 +158,17 @@ void Arduino::resetAllMsgValues()
     sendRecordingFlag = false;
     sendAnalyzingFlag = false;
     sendVolumeFlag = false;
+    sendString = false;
 }
 
 void Arduino::sendVolumeData( int volume )
 {
     sendVolumeFlag = true;
     mVolume = volume;
+}
+
+void Arduino::sendSerialString( string txt )
+{
+    serialString = txt;
+    sendString = true;
 }

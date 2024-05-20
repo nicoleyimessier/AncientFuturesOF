@@ -8,7 +8,7 @@
 #include "Recorder.h"
 #include "ofMain.h"
 #include "ofxTimeMeasurements.h"
-
+#include "ofxGui.h"
 #include <random>
 
 using namespace AncientFutures;
@@ -77,5 +77,20 @@ class AppManager {
     void           updateAmbientState();
 
     // LED ANIMATION SETUP
-    bool ledConfiguration{ false };
+    bool          ledConfiguration{ false };
+    LedTestStates mLedState{ NUM_LED_TESTING };
+    void          setLEDState( LedTestStates state );
+    void          nextLEDState();
+    string        getStateString(); 
+
+    // GUI
+    void         sendColorsBtnPressed();
+    ofxPanel gui;
+    ofxIntSlider r0;
+    ofxIntSlider g0;
+    ofxIntSlider b0;
+    ofxIntSlider r1;
+    ofxIntSlider g1;
+    ofxIntSlider b1;
+    ofxButton    sendColorsBtn;
 };

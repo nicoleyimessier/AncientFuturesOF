@@ -87,6 +87,17 @@ void AppManager::setup()
         oscMan.setup( "127.0.0.1", "app", configs().one().getTxPort(), configs().one().getRxPort() );
     }
 
+    // set up GUI
+    sendColorsBtn.addListener( this, &AppManager::sendColorsBtnPressed );
+    gui.setup(); // most of the time you don't need a name
+    gui.add( r0.setup( "red 0", 100, 0, 255 ) );
+    gui.add( g0.setup( "green 0", 100, 0, 255 ) );
+    gui.add( b0.setup( "blue 0", 100, 0, 255 ) );
+    gui.add( r1.setup( "red 1", 100, 0, 255 ) );
+    gui.add( g1.setup( "green 1", 100, 0, 255 ) );
+    gui.add( b1.setup( "blue 1", 100, 0, 255 ) );
+    gui.add( sendColorsBtn.setup( "Send Colors" ) );
+
     ofAddListener( ofEvents().keyPressed, this, &AppManager::onKeyPressed );
 }
 
@@ -97,11 +108,6 @@ void AppManager::update( float dt )
         TS_START( "arduino" );
         arduino.update();
         TS_STOP( "arduino" );
-
-        if( ledConfiguration ) {
-
-            return;
-        }
     }
 
     TS_START( "recorder" );
@@ -121,6 +127,10 @@ void AppManager::update( float dt )
         float elapsed = ofGetElapsedTimef() - startTime;
         if( mAppState == AppStates::IDLE && elapsed > 5.0f )
             setAppState( AppStates::COUNTDOWN );
+    }
+
+    if( ledConfiguration ) {
+        return;
     }
 
     switch( mAppState ) {
@@ -219,6 +229,14 @@ void AppManager::draw()
 
         recorder.drawDebug();
     }
+
+    if( ledConfiguration ) {
+        ofSetColor( 0 );
+        ofDrawBitmapString( "TESTING LEDS: " + getStateString(), ofGetWidth() / 2, ofGetHeight() / 2 );
+        ofSetColor( 255 );
+
+        gui.draw();
+    }
 }
 
 // ---- APP STAETS ---- //
@@ -281,6 +299,116 @@ void AppManager::setAppState( AppStates state )
     }
 }
 
+void AppManager::nextState()
+{
+    int       count = static_cast<int>( mAppState );
+    const int max = static_cast<int>( AppStates::NUM_STATES );
+
+    if( count < ( max - 1 ) )
+        count++;
+    else
+        count = 0;
+
+    setAppState( static_cast<AppStates>( count ) );
+}
+
+// ---- LED STATE ---- /
+void AppManager::nextLEDState()
+{
+    int       count = static_cast<int>( mLedState );
+    const int max = static_cast<int>( LedTestStates::NUM_LED_TESTING );
+
+    if( count < ( max - 1 ) )
+        count++;
+    else
+        count = 0;
+
+    setLEDState( static_cast<LedTestStates>( count ) );
+}
+
+void AppManager::setLEDState( LedTestStates state )
+{
+    mLedState = state;
+
+    switch( mLedState ) {
+    case SINGLE_LED:
+        arduino.sendSerialString( "z" );
+        break;
+    case SECOND_LED:
+        arduino.sendSerialString( "y" );
+        break;
+    case SINGLE_COLOR:
+        // Code to handle SINGLE_COLOR state
+        break;
+    case MIX_TWO_COLORS:
+        // Code to handle MIX_TWO_COLORS state
+        break;
+    case NUM_LED_TESTING:
+        // Code to handle NUM_LED_TESTING state
+        break;
+    default:
+        // Optional: Code to handle an unknown state
+        break;
+    }
+}
+
+string AppManager::getStateString()
+{
+    switch( mLedState ) {
+    case SINGLE_LED:
+        return "SINGLE_LED";
+    case SECOND_LED:
+        return "SECOND_LED";
+    case SINGLE_COLOR:
+        return "SINGLE_COLOR";
+    case MIX_TWO_COLORS:
+        return "MIX_TWO_COLORS";
+    case NUM_LED_TESTING:
+        return "NUM_LED_TESTING";
+    default:
+        return "UNKNOWN_STATE";
+    }
+}
+
+void AppManager::sendColorsBtnPressed()
+{
+
+    if( mLedState == MIX_TWO_COLORS ) {
+        string rgb = "";
+
+        int value_r0 = r0;
+        int value_g0 = g0;
+        int value_b0 = b0;
+        int value_r1 = r1;
+        int value_g1 = g1;
+        int value_b1 = b1;
+
+        rgb += ofToString( value_r0 ) + ",";
+        rgb += ofToString( value_g0 ) + ",";
+        rgb += ofToString( value_b0 ) + ",";
+        rgb += ofToString( value_r1 ) + ",";
+        rgb += ofToString( value_g1 ) + ",";
+        rgb += ofToString( value_b1 );
+
+        arduino.sendSentimentMsg( rgb );
+    }
+    else {
+        string rgb = "";
+
+        int value_r0 = r0;
+        int value_g0 = g0;
+        int value_b0 = b0;
+
+        rgb += "c,"; 
+        rgb += ofToString( value_r0 ) + ",";
+        rgb += ofToString( value_g0 ) + ",";
+        rgb += ofToString( value_b0 ); 
+
+        arduino.sendSentimentMsg( rgb );
+    }
+}
+
+// ---- SENTIMENT ---- /
 void AppManager::updateAmbientState()
 {
     // update state
@@ -341,21 +469,6 @@ string AppManager::parseSentiment( string path )
 }
 
 
-void AppManager::nextState()
-{
-    int       count = static_cast<int>( mAppState );
-    const int max = static_cast<int>( AppStates::NUM_STATES );
-
-    if( count < ( max - 1 ) ) {
-        count++;
-    }
-    else {
-        count = 0;
-    }
-
-    setAppState( static_cast<AppStates>( count ) );
-}
-
 string AppManager::getAppStateString()
 {
     switch( mAppState ) {
@@ -385,7 +498,13 @@ void AppManager::onKeyPressed( ofKeyEventArgs &e )
     case 'b':
         oscMan.sendString( "stopRecording" );
         break;
-    case 'c':
+    case 'l':
+        ledConfiguration = !ledConfiguration;
+        if( ledConfiguration )
+            nextLEDState();
+        break;
+    case 'n':
+        nextLEDState();
         break;
     case '1':
         // red to blue

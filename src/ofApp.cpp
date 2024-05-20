@@ -116,12 +116,13 @@ void ofApp::mousePressed( int x, int y, int button )
 //--------------------------------------------------------------
 void ofApp::mouseReleased( int x, int y, int button )
 {
-    if( configs().getUseMouse() ) {
+
+    /*if( configs().getUseMouse() ) {
         ofLogNotice() << "mouseReleased: " << x << ", " << y;
 
         if( app.getAppState() == AppStates::IDLE || app.getAppState() == AppStates::STOPPING )
             app.nextState();
-    }
+    }*/
 }
 
 //--------------------------------------------------------------
