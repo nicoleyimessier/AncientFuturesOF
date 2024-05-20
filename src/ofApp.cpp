@@ -22,8 +22,6 @@ void ofApp::setup()
 
     app.setup();
 
-    // Setup touch manager
-
     // enable the Windows Touch Hook
     ofxWinTouchHook::EnableTouch();
 

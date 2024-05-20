@@ -47,7 +47,7 @@ class AppManager {
 
     // Animation timer
     float startAnimationTime{ 0.0f };
-    float animationTime{ 10.0f };
+    float const animationTime{ 10.0f };
 
     // CLOSING TIMER
     float startTyTimer{ 0.0f };
@@ -56,9 +56,19 @@ class AppManager {
     // osc
     OSCManager oscMan;
 
-
     // testing
-    float startTime {0.0f};
-    
-    float durationTesting {10.0f}; 
+    float startTime{ 0.0f };
+    float durationTesting{ 10.0f };
+
+    // json sentiment parser
+    string parseSentiment(string path); 
+
+    // ambient animations
+    float          startAmbientTime{ 0.0f };
+    float const    ambientDuration{ 300.0f };
+    float          startAmbientIndividualTime{ 0.0f };
+    float const    individualAmbientDur{ 10.0f };
+    int            numAmbientEmotions{ 200 };
+    int            ambientIndex{ 0 };
+    vector<string> paths;
 };

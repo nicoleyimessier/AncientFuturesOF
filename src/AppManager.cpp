@@ -12,7 +12,60 @@ AppManager::~AppManager()
 
 void AppManager::setup()
 {
-    // set up app settings
+    // set up ambient recordings
+    string path = configs().one().getRootPath() + ofToDataPath( "recordings" );
+    if( ofDirectory::doesDirectoryExist( path ) ) {
+
+        // years
+        ofDirectory recordingPath( path );
+        recordingPath.listDir();
+        for( int i = 0; i < recordingPath.size(); i++ ) {
+            if( ofDirectory::doesDirectoryExist( recordingPath.getPath( i ) ) ) {
+                // year
+                ofDirectory dirYear( recordingPath.getPath( i ) );
+                dirYear.listDir();
+
+
+                for( int j = 0; j < dirYear.size(); j++ ) {
+                    if( ofDirectory::doesDirectoryExist( dirYear.getPath( j ) ) ) {
+                        // month
+                        ofDirectory dirMonth( dirYear.getPath( j ) );
+                        dirMonth.listDir();
+
+                        for( int k = 0; k < dirMonth.size(); k++ ) {
+                            if( ofDirectory::doesDirectoryExist( dirMonth.getPath( k ) ) ) {
+                                // day
+                                ofDirectory dirDay( dirMonth.getPath( k ) );
+                                dirDay.listDir();
+
+                                for( int l = 0; l < dirDay.size(); l++ ) {
+                                    if( ofDirectory::doesDirectoryExist( dirDay.getPath( l ) ) ) {
+                                        // individual
+                                        ofDirectory individual( dirDay.getPath( l ) );
+                                        individual.allowExt( "json" );
+                                        individual.listDir();
+
+                                        for( int m = 0; m < individual.size(); m++ ) {
+
+                                            if( ofIsStringInString( individual.getPath( m ), "sentiment" )
+                                                && paths.size() <= numAmbientEmotions ) {
+                                                ofLogNotice( individual.getPath( m ) );
+                                                paths.push_back( individual.getPath( m ) );
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else {
+        ofLogNotice() << path << " does not exists!";
+    }
+
 
     //! setup recorder
     recorder.setup( ofToDataPath( "recordings" ) );
@@ -64,22 +117,35 @@ void AppManager::update( float dt )
     }
 
     switch( mAppState ) {
-    case AppStates::IDLE:
+    case AppStates::IDLE: {
+
+        float elapsedIndivudual = ofGetElapsedTimef() - startAmbientIndividualTime;
+        if( elapsedIndivudual > individualAmbientDur ) {
+
+            ( ambientIndex < paths.size() - 1 ) ? ambientIndex++ : ambientIndex = 0;
+
+            if( configs().one().getUseArduino() )
+                arduino.sendSentimentMsg( parseSentiment( paths[ambientIndex] ) );
+
+            startAmbientIndividualTime = ofGetElapsedTimef();
+        }
+
         break;
+    }
     case AppStates::COUNTDOWN: {
-        
+
         if( pMan.getDifference() > 3.0f )
             setAppState( AppStates::RECORDING );
-        
+
         break;
     }
     case AppStates::RECORDING: {
-        
+
         /*
         // Un comment for timed experience
         if( pMan.getTimer() > 10.0f )
             setAppState( AppStates::PROCESSING );
-        */ 
+        */
 
         // if we are recording, send volume data to the arduino
         arduino.sendVolumeData( recorder.getMappedVolume() );
@@ -151,6 +217,15 @@ void AppManager::setAppState( AppStates state )
     case AppStates::IDLE: {
         oscMan.clearTxt();
         pMan.setPage( Pages::INTRO );
+
+        // Set up ambient animation
+        ( ambientIndex < paths.size() - 1 ) ? ambientIndex++ : ambientIndex = 0;
+
+        if( configs().one().getUseArduino() )
+            arduino.sendSentimentMsg( parseSentiment( paths[ambientIndex] ) );
+
+        startAmbientIndividualTime = ofGetElapsedTimef();
+
         break;
     }
     case AppStates::COUNTDOWN: {
@@ -178,41 +253,8 @@ void AppManager::setAppState( AppStates state )
     case AppStates::ANIMATING: {
         pMan.setPage( Pages::ANIMATING );
 
-        string rgb = "";
-
-        // open json file
-        if( ofFile::doesFileExist( recorder.getSentimentPath() ) ) {
-            ofLogNotice() << "Found  sentiment analysis " << recorder.getSentimentPath() << ", loading";
-
-
-            try {
-                ofJson json = ofLoadJson( recorder.getSentimentPath() );
-                // ofLogNotice() << "JSON DUMP: " << json.dump();
-
-                if( !json["emotion"]["color"].is_null() ) {
-
-                    for( int i = 0; i < json["emotion"]["color"].size(); i++ ) {
-
-                        if( !json["emotion"]["color"][i]["rgb"].is_null() ) {
-
-                            for( int j = 0; j < json["emotion"]["color"][i]["rgb"].size(); j++ ) {
-                                int value = json["emotion"]["color"][i]["rgb"][j];
-                                rgb += ofToString( value ) + ",";
-                            }
-                        }
-                    }
-                }
-            }
-            catch( exception &exc ) {
-                ofLogError() << "Unable to load json file";
-            }
-        }
-        else {
-            ofLogError() << "Sentiment file " << recorder.getSentimentPath() << " does not exists!";
-        }
-
         if( configs().one().getUseArduino() )
-            arduino.sendSentimentMsg( rgb );
+            arduino.sendSentimentMsg( parseSentiment( recorder.getSentimentPath() ) );
 
         startAnimationTime = ofGetElapsedTimef();
         break;
@@ -228,6 +270,44 @@ void AppManager::setAppState( AppStates state )
     default:
         break;
     }
+}
+
+string AppManager::parseSentiment( string path )
+{
+    string rgb = "";
+
+    // open json file
+    if( ofFile::doesFileExist( path ) ) {
+        ofLogNotice() << "Found  sentiment analysis " << path << ", loading";
+
+
+        try {
+            ofJson json = ofLoadJson( path );
+            // ofLogNotice() << "JSON DUMP: " << json.dump();
+
+            if( !json["emotion"]["color"].is_null() ) {
+
+                for( int i = 0; i < json["emotion"]["color"].size(); i++ ) {
+
+                    if( !json["emotion"]["color"][i]["rgb"].is_null() ) {
+
+                        for( int j = 0; j < json["emotion"]["color"][i]["rgb"].size(); j++ ) {
+                            int value = json["emotion"]["color"][i]["rgb"][j];
+                            rgb += ofToString( value ) + ",";
+                        }
+                    }
+                }
+            }
+        }
+        catch( exception &exc ) {
+            ofLogError() << "Unable to load json file";
+        }
+    }
+    else {
+        ofLogError() << "Sentiment file " << path << " does not exists!";
+    }
+
+    return rgb;
 }
 
 
