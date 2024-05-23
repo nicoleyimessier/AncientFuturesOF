@@ -17,7 +17,7 @@ class Page {
     void drawDescription();
     void drawPrompt();
     void drawTemplate();
-    void drawCountdown();
+    void drawIntro();
     void drawMessageStored();
     void drawTimer();
     void drawLang();

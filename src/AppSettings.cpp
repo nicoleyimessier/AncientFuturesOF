@@ -30,6 +30,7 @@ void AppSettings::setup()
 					mApiKey = app.value( "api_key", "" ); 
 					mRxPort = app.value( "osc_rx_port",  5000 ); 
 					mTxPort = app.value( "osc_tx_port", 5000 ); 
+					mAudioDevice = app.value( "audio_device", "" ); 
 
 					// paths
                     mRootPath = app.value( "root_path", "" );

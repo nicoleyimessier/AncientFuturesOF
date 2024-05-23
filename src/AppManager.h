@@ -7,8 +7,9 @@
 #include "PageManager.h"
 #include "Recorder.h"
 #include "ofMain.h"
-#include "ofxTimeMeasurements.h"
 #include "ofxGui.h"
+#include "ofxTimeMeasurements.h"
+
 #include <random>
 
 using namespace AncientFutures;
@@ -81,11 +82,11 @@ class AppManager {
     LedTestStates mLedState{ NUM_LED_TESTING };
     void          setLEDState( LedTestStates state );
     void          nextLEDState();
-    string        getStateString(); 
+    string        getStateString();
 
     // GUI
     void         sendColorsBtnPressed();
-    ofxPanel gui;
+    ofxPanel     gui;
     ofxIntSlider r0;
     ofxIntSlider g0;
     ofxIntSlider b0;
@@ -93,4 +94,9 @@ class AppManager {
     ofxIntSlider g1;
     ofxIntSlider b1;
     ofxButton    sendColorsBtn;
+
+    // sound player
+    ofSoundPlayer intro;
+    ofSoundPlayer processing;
+    ofSoundPlayer end;
 };

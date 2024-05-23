@@ -15,7 +15,7 @@ void PageManager::setup()
 
 void PageManager::update( float dt )
 {
-    if( mPage == Pages::COUNTDOWN ) {
+    if( mPage == Pages::INTRO ) {
         timeDiffCd = ofGetElapsedTimef() - startCountdownTime;
 
         countDownIndex = countdownDur - floor( timeDiffCd );
@@ -42,24 +42,20 @@ void PageManager::draw()
     page.drawTemplate();
 
     switch( mPage ) {
-    case Pages::INTRO: {
+    case Pages::IDLE: {
         //page.drawDescription();
         page.drawPrompt();
         page.drawLang();
         break;
     }
-    case Pages::COUNTDOWN:
-        page.drawCountdown();
+    case Pages::INTRO:
+        page.drawIntro();
         break;
     case Pages::LISTENING:
-        //page.drawCountdown();
-        //page.drawTimer();
         break;
     case Pages::PROCESSING:
-        page.drawCountdown();
         break;
     case Pages::ANIMATING:
-        page.drawCountdown();
         break;
     case Pages::CLOSE_OUT:
         page.drawMessageStored();
@@ -75,11 +71,11 @@ void PageManager::setPage( Pages _page )
     mPage = _page;
 
     switch( mPage ) {
-    case Pages::INTRO:
+    case Pages::IDLE:
         countDownIndex = 3;
         timerIndex = 20;
         break;
-    case Pages::COUNTDOWN: {
+    case Pages::INTRO: {
         startCountdownTime = ofGetElapsedTimef();
         break;
     }

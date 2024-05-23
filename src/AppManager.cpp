@@ -98,6 +98,11 @@ void AppManager::setup()
     gui.add( b1.setup( "blue 1", 100, 0, 255 ) );
     gui.add( sendColorsBtn.setup( "Send Colors" ) );
 
+    // setup audio
+    intro.load( "tracks\\processing.mp3" );
+    processing.load( "tracks\\processing.mp3" );
+    end.load( "tracks\\processing.mp3" );
+
     ofAddListener( ofEvents().keyPressed, this, &AppManager::onKeyPressed );
 }
 
@@ -126,7 +131,7 @@ void AppManager::update( float dt )
     if( configs().one().getTesting() ) {
         float elapsed = ofGetElapsedTimef() - startTime;
         if( mAppState == AppStates::IDLE && elapsed > 5.0f )
-            setAppState( AppStates::COUNTDOWN );
+            setAppState( AppStates::INTRO );
     }
 
     if( ledConfiguration ) {
@@ -146,7 +151,7 @@ void AppManager::update( float dt )
         if( individualAmbient ) {
 
             // Individual emotion animation
-            if( elapsedIndivudual > individualAmbientDur && paths.size()) {
+            if( elapsedIndivudual > individualAmbientDur && paths.size() ) {
 
                 ( ambientIndex < paths.size() - 1 ) ? ambientIndex++ : ambientIndex = 0;
 
@@ -159,7 +164,7 @@ void AppManager::update( float dt )
 
         break;
     }
-    case AppStates::COUNTDOWN: {
+    case AppStates::INTRO: {
 
         if( pMan.getDifference() > 3.0f )
             setAppState( AppStates::RECORDING );
@@ -251,12 +256,13 @@ void AppManager::setAppState( AppStates state )
     switch( mAppState ) {
     case AppStates::IDLE: {
         oscMan.clearTxt();
-        pMan.setPage( Pages::INTRO );
+        pMan.setPage( Pages::IDLE );
         updateAmbientState();
+        ofSoundUpdate();
         break;
     }
-    case AppStates::COUNTDOWN: {
-        pMan.setPage( Pages::COUNTDOWN );
+    case AppStates::INTRO: {
+        pMan.setPage( Pages::INTRO );
 
         if( configs().one().getUseArduino() )
             arduino.sendRecording();
@@ -275,6 +281,8 @@ void AppManager::setAppState( AppStates state )
 
         if( configs().one().getUseArduino() )
             arduino.sendAnalyzing();
+
+        ofSoundUpdate();
         break;
     }
     case AppStates::ANIMATING: {
@@ -284,6 +292,7 @@ void AppManager::setAppState( AppStates state )
             arduino.sendSentimentMsg( parseSentiment( recorder.getSentimentPath() ) );
 
         startAnimationTime = ofGetElapsedTimef();
+        ofSoundUpdate();
         break;
     }
     case AppStates::STOPPING: {
@@ -292,6 +301,7 @@ void AppManager::setAppState( AppStates state )
 
         pMan.setPage( Pages::CLOSE_OUT );
         startTyTimer = ofGetElapsedTimef();
+        ofSoundUpdate();
         break;
     }
     default:
@@ -399,10 +409,10 @@ void AppManager::sendColorsBtnPressed()
         int value_g0 = g0;
         int value_b0 = b0;
 
-        rgb += "c,"; 
+        rgb += "c,";
         rgb += ofToString( value_r0 ) + ",";
         rgb += ofToString( value_g0 ) + ",";
-        rgb += ofToString( value_b0 ); 
+        rgb += ofToString( value_b0 );
 
         arduino.sendSentimentMsg( rgb );
     }
@@ -474,8 +484,8 @@ string AppManager::getAppStateString()
     switch( mAppState ) {
     case AppStates::IDLE:
         return "IDLE";
-    case AppStates::COUNTDOWN:
-        return "COUNTDOWN";
+    case AppStates::INTRO:
+        return "INTRO";
     case AppStates::RECORDING:
         return "RECORDING";
     case AppStates::PROCESSING:

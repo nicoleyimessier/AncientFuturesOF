@@ -23,7 +23,7 @@ class PageManager {
 
   private:
     // App states
-    Pages mPage{ Pages::INTRO };
+    Pages mPage{ Pages::IDLE };
 
     // Pages
     Page page; 

@@ -112,7 +112,7 @@ void Page::drawLang()
     );
 }
 
-void Page::drawCountdown()
+void Page::drawIntro()
 {
     int  numLines;
     bool wordsWereCropped;

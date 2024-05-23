@@ -29,6 +29,7 @@ class AppSettings final {
     string getArduinoPort() const { return mArduinoPort; }
     string getSentimentScriptPath() const { return mSentimentPath; }
     string getAPIKey() const { return mApiKey; }
+    string getAudioDevice() const { return mAudioDevice; }
     int    getRxPort() const { return mRxPort; }
     int    getTxPort() const { return mTxPort; }
 
@@ -48,6 +49,7 @@ class AppSettings final {
     bool      mUseMouse{ true };
     bool      mUseArduino{ false };
     string    mArduinoPort{ "" };
+    string    mAudioDevice{ "" };
     bool      mMouseOn{ false };
     int       mWindowMode{ 8 };
     bool      mUseOSC{ false };

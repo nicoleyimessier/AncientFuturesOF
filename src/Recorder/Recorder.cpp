@@ -67,12 +67,13 @@ void Recorder::setupSoundBuffer()
         settings.setInDevice( devices[0] );
     */
 
+     ofLogNotice() << configs().one().getAudioDevice();
 
-    // uncomment for install pc
     auto devices = soundStream.getDeviceList( ofSoundDevice::Api::MS_DS );
     for( auto &device : devices ) {
         ofLogNotice() << device.name;
-        if( device.name == "Microphone( Realtek High Definition Audio )" )
+        if( device.name == configs().one().getAudioDevice() )
+        //if( device.name == "Microphone( Realtek High Definition Audio )" )
         //if( device.name == "Headset (LE_WH-1000XM3)" )
             // if( device.name == "Microphone (JLAB TALK PRO MICROPHONE)" )
             settings.setInDevice( device );
