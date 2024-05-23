@@ -72,7 +72,8 @@ void Recorder::setupSoundBuffer()
     auto devices = soundStream.getDeviceList( ofSoundDevice::Api::MS_DS );
     for( auto &device : devices ) {
         ofLogNotice() << device.name;
-        if( device.name == "Headset (LE_WH-1000XM3)" )
+        if( device.name == "Microphone( Realtek High Definition Audio )" )
+        //if( device.name == "Headset (LE_WH-1000XM3)" )
             // if( device.name == "Microphone (JLAB TALK PRO MICROPHONE)" )
             settings.setInDevice( device );
     }

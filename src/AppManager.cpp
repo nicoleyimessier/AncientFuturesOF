@@ -146,7 +146,7 @@ void AppManager::update( float dt )
         if( individualAmbient ) {
 
             // Individual emotion animation
-            if( elapsedIndivudual > individualAmbientDur ) {
+            if( elapsedIndivudual > individualAmbientDur && paths.size()) {
 
                 ( ambientIndex < paths.size() - 1 ) ? ambientIndex++ : ambientIndex = 0;
 
