@@ -15,13 +15,7 @@ void PageManager::setup()
 
 void PageManager::update( float dt )
 {
-    if( mPage == Pages::INTRO ) {
-        timeDiffCd = ofGetElapsedTimef() - startCountdownTime;
-
-        countDownIndex = countdownDur - floor( timeDiffCd );
-        page.setCountdown( ofToString( countDownIndex ) );
-    }
-    else if( mPage == Pages::LISTENING ) {
+    if( mPage == Pages::LISTENING ) {
         timeDiffTimer = ofGetElapsedTimef() - startTimer;
 
         timerIndex = timerDur - floor( timeDiffTimer );
@@ -52,10 +46,13 @@ void PageManager::draw()
         page.drawIntro();
         break;
     case Pages::LISTENING:
+        page.drawText( "Listening" ); 
         break;
     case Pages::PROCESSING:
+        page.drawText( "PROCESSING" ); 
         break;
     case Pages::ANIMATING:
+        page.drawText( "ANIMATING" ); 
         break;
     case Pages::CLOSE_OUT:
         page.drawMessageStored();

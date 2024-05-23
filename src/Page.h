@@ -18,6 +18,7 @@ class Page {
     void drawPrompt();
     void drawTemplate();
     void drawIntro();
+    void drawText(string txt); 
     void drawMessageStored();
     void drawTimer();
     void drawLang();

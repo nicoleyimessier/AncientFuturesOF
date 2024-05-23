@@ -99,9 +99,9 @@ void AppManager::setup()
     gui.add( sendColorsBtn.setup( "Send Colors" ) );
 
     // setup audio
-    intro.load( "tracks\\processing.mp3" );
+    intro.load( "tracks\\intro.mp3" );
     processing.load( "tracks\\processing.mp3" );
-    end.load( "tracks\\processing.mp3" );
+    end.load( "tracks\\ending.mp3" );
 
     ofAddListener( ofEvents().keyPressed, this, &AppManager::onKeyPressed );
 }
@@ -166,9 +166,10 @@ void AppManager::update( float dt )
     }
     case AppStates::INTRO: {
 
-        if( pMan.getDifference() > 3.0f )
+        if( !intro.getIsPlaying() )
             setAppState( AppStates::RECORDING );
 
+        ofSoundUpdate();
         break;
     }
     case AppStates::RECORDING: {
@@ -191,24 +192,33 @@ void AppManager::update( float dt )
             recorder.setTranslation( oscMan.getTranscription() );
             recorder.setAudioState( Recorder::AudioRecordingStates::SPEECH_TO_TEXT );
         }
-        else if( recorder.getIsDoneProcessing() ) {
+        else if( recorder.getIsDoneProcessing() && !processing.getIsPlaying() ) {
             setAppState( AppStates::ANIMATING );
         }
+
+        ofSoundUpdate();
 
         break;
     }
     case AppStates::ANIMATING: {
-        float elapsedTime = ofGetElapsedTimef() - startAnimationTime;
+        // float elapsedTime = ofGetElapsedTimef() - startAnimationTime;
 
-        if( elapsedTime > animationTime )
+        // if( elapsedTime > animationTime )
+        //     setAppState( AppStates::STOPPING );
+
+        if( !end.getIsPlaying() )
             setAppState( AppStates::STOPPING );
+
+        ofSoundUpdate();
         break;
     }
     case AppStates::STOPPING: {
 
-        float elapsed = ofGetElapsedTimef() - startTyTimer;
+        /*float elapsed = ofGetElapsedTimef() - startTyTimer;
         if( elapsed > tyTimeDur )
-            setAppState( AppStates::IDLE );
+            setAppState( AppStates::IDLE );*/
+
+        setAppState( AppStates::IDLE );
 
         break;
     }
@@ -258,7 +268,6 @@ void AppManager::setAppState( AppStates state )
         oscMan.clearTxt();
         pMan.setPage( Pages::IDLE );
         updateAmbientState();
-        ofSoundUpdate();
         break;
     }
     case AppStates::INTRO: {
@@ -266,6 +275,8 @@ void AppManager::setAppState( AppStates state )
 
         if( configs().one().getUseArduino() )
             arduino.sendRecording();
+
+        intro.play();
         break;
     }
     case AppStates::RECORDING: {
@@ -282,17 +293,18 @@ void AppManager::setAppState( AppStates state )
         if( configs().one().getUseArduino() )
             arduino.sendAnalyzing();
 
-        ofSoundUpdate();
+        processing.play();
         break;
     }
     case AppStates::ANIMATING: {
+        end.play();
+
         pMan.setPage( Pages::ANIMATING );
 
         if( configs().one().getUseArduino() )
             arduino.sendSentimentMsg( parseSentiment( recorder.getSentimentPath() ) );
 
         startAnimationTime = ofGetElapsedTimef();
-        ofSoundUpdate();
         break;
     }
     case AppStates::STOPPING: {
@@ -301,7 +313,7 @@ void AppManager::setAppState( AppStates state )
 
         pMan.setPage( Pages::CLOSE_OUT );
         startTyTimer = ofGetElapsedTimef();
-        ofSoundUpdate();
+
         break;
     }
     default:
