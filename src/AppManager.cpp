@@ -277,6 +277,8 @@ void AppManager::setAppState( AppStates state )
             arduino.sendRecording();
 
         intro.play();
+        processing.stop();
+        end.stop(); 
         break;
     }
     case AppStates::RECORDING: {
@@ -294,10 +296,14 @@ void AppManager::setAppState( AppStates state )
             arduino.sendAnalyzing();
 
         processing.play();
+        intro.stop();
+        end.stop(); 
         break;
     }
     case AppStates::ANIMATING: {
         end.play();
+        intro.stop();
+        processing.stop(); 
 
         pMan.setPage( Pages::ANIMATING );
 
