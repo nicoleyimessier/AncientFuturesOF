@@ -133,7 +133,7 @@ void Arduino::sendSentimentMsg( string txt )
     mTxt = txt;
     bSendSerialMessage = true;
 
-    ofLogNotice() << "Send mTxt " << txt;
+    ofLogNotice( "sendSentimentMsg" ) << mTxt;
    
 }
 

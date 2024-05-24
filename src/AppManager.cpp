@@ -285,8 +285,8 @@ void AppManager::setAppState( AppStates state )
 
     switch( mAppState ) {
     case AppStates::IDLE: {
-        startAmbientIndividualTime = ofGetElapsedTimef(); 
-        startAmbientTime = ofGetElapsedTimef(); 
+        startAmbientIndividualTime = ofGetElapsedTimef();
+        startAmbientTime = ofGetElapsedTimef();
         oscMan.clearTxt();
         pMan.setPage( Pages::IDLE );
         updateAmbientState();
@@ -331,8 +331,9 @@ void AppManager::setAppState( AppStates state )
 
         pMan.setPage( Pages::ANIMATING );
 
+        string txt = recorder.getSentimentPath() + ",g";
         if( configs().one().getUseArduino() )
-            arduino.sendSentimentMsg( parseSentiment( recorder.getSentimentPath() ) );
+            arduino.sendSentimentMsg( parseSentiment( txt ) );
 
         startAnimationTime = ofGetElapsedTimef();
         break;
@@ -345,7 +346,6 @@ void AppManager::setAppState( AppStates state )
 
         pMan.setPage( Pages::CLOSE_OUT );
         startTyTimer = ofGetElapsedTimef();
-
         break;
     }
     default:
@@ -394,6 +394,9 @@ void AppManager::setLEDState( LedTestStates state )
     case SINGLE_COLOR:
         // Code to handle SINGLE_COLOR state
         break;
+    case SINGLE_COLOR_TO_GRADIENT:
+        // Code to handle SINGLE_COLOR state
+        break;
     case MIX_TWO_COLORS:
         // Code to handle MIX_TWO_COLORS state
         break;
@@ -415,6 +418,8 @@ string AppManager::getStateString()
         return "SECOND_LED";
     case SINGLE_COLOR:
         return "SINGLE_COLOR";
+    case SINGLE_COLOR_TO_GRADIENT:
+        return "SINGLE_COLOR_TO_GRADIENT";
     case MIX_TWO_COLORS:
         return "MIX_TWO_COLORS";
     case NUM_LED_TESTING:
@@ -446,17 +451,37 @@ void AppManager::sendColorsBtnPressed()
 
         arduino.sendSentimentMsg( rgb );
     }
-    else {
+    else if( mLedState == SINGLE_COLOR ) {
         string rgb = "";
 
         int value_r0 = r0;
         int value_g0 = g0;
         int value_b0 = b0;
 
-        rgb += "c,";
         rgb += ofToString( value_r0 ) + ",";
         rgb += ofToString( value_g0 ) + ",";
-        rgb += ofToString( value_b0 );
+        rgb += ofToString( value_b0 ) + ",";
+        rgb += "c";
+
+        arduino.sendSentimentMsg( rgb );
+    }
+    else if( mLedState == SINGLE_COLOR_TO_GRADIENT ) {
+        string rgb = "";
+
+        int value_r0 = r0;
+        int value_g0 = g0;
+        int value_b0 = b0;
+        int value_r1 = r1;
+        int value_g1 = g1;
+        int value_b1 = b1;
+
+        rgb += ofToString( value_r0 ) + ",";
+        rgb += ofToString( value_g0 ) + ",";
+        rgb += ofToString( value_b0 ) + ",";
+        rgb += ofToString( value_r1 ) + ",";
+        rgb += ofToString( value_g1 ) + ",";
+        rgb += ofToString( value_b1 ) + ",";
+        rgb += "g";
 
         arduino.sendSentimentMsg( rgb );
     }
@@ -575,7 +600,8 @@ void AppManager::onKeyPressed( ofKeyEventArgs &e )
         arduino.sendSentimentMsg( "255,0,255,124,252,0" );
         break;
     case '3':
-        arduino.sendSentimentMsg( "255,0,0,0,0,255" );
+        // ambient
+        arduino.sendSentimentMsg( "255,95,50,255,255,255" );
         break;
     default:
         break;
