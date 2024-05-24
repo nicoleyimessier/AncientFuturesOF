@@ -14,7 +14,7 @@ void ofApp::setup()
     ss.setup( ofGetWidth(), ofGetHeight(), ofxScreenSetup::WINDOWED );
 
 
-    ofSetFrameRate( 30 );
+    ofSetFrameRate( 60 );
     ofSetVerticalSync( true );
     ofEnableSmoothing();
     ofSetCircleResolution( 80 );
