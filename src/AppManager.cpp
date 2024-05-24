@@ -132,6 +132,8 @@ void AppManager::update( float dt )
         float elapsed = ofGetElapsedTimef() - startTime;
         if( mAppState == AppStates::IDLE && elapsed > 5.0f )
             setAppState( AppStates::INTRO );
+        if( mAppState == AppStates::RECORDING && elapsed > 15.0f )
+            setAppState( AppStates::END_RECORDING );
     }
 
     if( ledConfiguration ) {
@@ -230,6 +232,7 @@ void AppManager::update( float dt )
 
         setAppState( AppStates::IDLE );
 
+
         break;
     }
     default:
@@ -282,6 +285,8 @@ void AppManager::setAppState( AppStates state )
 
     switch( mAppState ) {
     case AppStates::IDLE: {
+        startAmbientIndividualTime = ofGetElapsedTimef(); 
+        startAmbientTime = ofGetElapsedTimef(); 
         oscMan.clearTxt();
         pMan.setPage( Pages::IDLE );
         updateAmbientState();

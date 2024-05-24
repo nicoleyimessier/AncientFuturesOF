@@ -62,11 +62,6 @@ void ofApp::keyReleased( int key )
         ss.cycleToNextScreenMode();
         break;
     }
-    case ' ': {
-
-        ofLogNotice() << "HELLO" ; 
-        break;
-    }
     default:
         break;
     }
