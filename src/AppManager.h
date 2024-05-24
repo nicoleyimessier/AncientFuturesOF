@@ -99,4 +99,5 @@ class AppManager {
     ofSoundPlayer intro;
     ofSoundPlayer processing;
     ofSoundPlayer end;
+    void          stopAllAudio(); 
 };

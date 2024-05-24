@@ -28,6 +28,9 @@ void PageManager::update( float dt )
             // page.setTimer( "00:0" + ofToString( timerIndex ) );
         }
     }
+    else if(mPage == Pages::END_RECORDING) {
+        timeDiffTimer = ofGetElapsedTimef() - startTimer;
+    }
 }
 
 void PageManager::draw()
@@ -47,6 +50,9 @@ void PageManager::draw()
         break;
     case Pages::LISTENING:
         page.drawText( "Listening" ); 
+        break;
+    case Pages::END_RECORDING:
+        page.drawText( "END_RECORDING" );
         break;
     case Pages::PROCESSING:
         page.drawText( "PROCESSING" ); 
@@ -82,6 +88,8 @@ void PageManager::setPage( Pages _page )
         page.setTimer( "" ); 
         startTimer = ofGetElapsedTimef();
         break;
+    case Pages::END_RECORDING:
+        startTimer = ofGetElapsedTimef();
     case Pages::PROCESSING:
         timerIndex = 20;
         page.setCountdown( "Processing your sonic message." );

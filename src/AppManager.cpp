@@ -186,6 +186,16 @@ void AppManager::update( float dt )
 
         break;
     }
+    case AppStates::END_RECORDING: {
+
+
+        // Un comment for timed experience
+        if( pMan.getTimer() > 5.0f )
+            setAppState( AppStates::PROCESSING );
+
+
+        break;
+    }
     case AppStates::PROCESSING: {
 
         if( recorder.getState() == Recorder::AudioRecordingStates::STOP ) {
@@ -255,6 +265,13 @@ void AppManager::draw()
 }
 
 // ---- APP STAETS ---- //
+void AppManager::stopAllAudio()
+{
+    intro.stop();
+    processing.stop();
+    end.stop();
+}
+
 void AppManager::setAppState( AppStates state )
 {
     mAppState = state;
@@ -276,34 +293,36 @@ void AppManager::setAppState( AppStates state )
         if( configs().one().getUseArduino() )
             arduino.sendRecording();
 
+        stopAllAudio();
         intro.play();
-        processing.stop();
-        end.stop(); 
         break;
     }
     case AppStates::RECORDING: {
+        stopAllAudio();
         pMan.setPage( Pages::LISTENING );
         recorder.start();
         oscMan.sendString( "record" );
         break;
     }
+    case AppStates::END_RECORDING: {
+        pMan.setPage( Pages::END_RECORDING );
+        recorder.stop();
+
+        stopAllAudio();
+        processing.play();
+        break;
+    }
     case AppStates::PROCESSING: {
         pMan.setPage( Pages::PROCESSING );
-        recorder.stop();
         oscMan.sendString( "stopRecording" );
 
         if( configs().one().getUseArduino() )
             arduino.sendAnalyzing();
-
-        processing.play();
-        intro.stop();
-        end.stop(); 
         break;
     }
     case AppStates::ANIMATING: {
+        stopAllAudio();
         end.play();
-        intro.stop();
-        processing.stop(); 
 
         pMan.setPage( Pages::ANIMATING );
 
@@ -314,6 +333,8 @@ void AppManager::setAppState( AppStates state )
         break;
     }
     case AppStates::STOPPING: {
+        stopAllAudio();
+
         if( configs().one().getUseArduino() )
             arduino.sendStopMsg();
 
@@ -506,6 +527,8 @@ string AppManager::getAppStateString()
         return "INTRO";
     case AppStates::RECORDING:
         return "RECORDING";
+    case AppStates::END_RECORDING:
+        return "END_RECORDING";
     case AppStates::PROCESSING:
         return "PROCESSING";
     case AppStates::ANIMATING:
@@ -521,6 +544,10 @@ void AppManager::onKeyPressed( ofKeyEventArgs &e )
 {
     switch( e.key ) {
     case ' ':
+        if( mAppState == AppStates::IDLE || mAppState == AppStates::RECORDING )
+            nextState();
+        break;
+    case 'a':
         nextState();
         break;
     case 'b':
