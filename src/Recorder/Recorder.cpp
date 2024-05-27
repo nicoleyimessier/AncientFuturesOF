@@ -6,12 +6,12 @@ Recorder::Recorder()
 
 Recorder::~Recorder()
 {
-    soundStream.close();
+    // soundStream.close();
 }
 
 void Recorder::onExit( ofEventArgs &e )
 {
-    soundStream.close();
+    // soundStream.close();
 }
 
 void Recorder::setup( string recordingPath )
@@ -40,7 +40,7 @@ void Recorder::setup( string recordingPath )
     mRecordingPath = path + "\\";
 
     mRootPath = configs().one().getRootPath();
-    mSentimentPath = configs().one().getSentimentScriptPath(); 
+    mSentimentPath = configs().one().getSentimentScriptPath();
     // Setup audio buffer
     int bufferSize = 1024;
     inputFrames.assign( bufferSize, 0.0 );
@@ -53,29 +53,19 @@ void Recorder::setup( string recordingPath )
 
 void Recorder::setupSoundBuffer()
 {
+    return;
     ofSoundStreamSettings settings;
     settings.setApi( ofSoundDevice::Api::MS_DS );
-    /*
-    auto devices = soundStream.getMatchingDevices( "Headset" );
-    if( !devices.empty() ) {
-        settings.setInDevice( devices[0] );
-    }
 
-
-    auto devices = soundStream.getMatchingDevices( "Focusrite USB ASIO" );
-    if( !devices.empty() )
-        settings.setInDevice( devices[0] );
-    */
-
-     ofLogNotice() << configs().one().getAudioDevice();
+    ofLogNotice() << configs().one().getAudioDevice();
 
     auto devices = soundStream.getDeviceList( ofSoundDevice::Api::MS_DS );
     for( auto &device : devices ) {
         ofLogNotice() << device.name;
         if( device.name == configs().one().getAudioDevice() )
-        //if( device.name == "Microphone( Realtek High Definition Audio )" )
-        //if( device.name == "Headset (LE_WH-1000XM3)" )
-            // if( device.name == "Microphone (JLAB TALK PRO MICROPHONE)" )
+            // if( device.name == "Microphone( Realtek High Definition Audio )" )
+            // if( device.name == "Headset (LE_WH-1000XM3)" )
+            //  if( device.name == "Microphone (JLAB TALK PRO MICROPHONE)" )
             settings.setInDevice( device );
     }
 
@@ -90,7 +80,7 @@ void Recorder::setupSoundBuffer()
 
 void Recorder::update()
 {
-   // ofLogNotice() << "mSmoothedVol: " << mSmoothedVol;
+    // ofLogNotice() << "mSmoothedVol: " << mSmoothedVol;
 
     mScaledVol = ofMap( mSmoothedVol, 0.0, 0.015, 0.1, 1.0, true );
 }
@@ -107,7 +97,7 @@ void Recorder::drawDebug()
     {
         ofDrawBitmapStringHighlight( "FPS: " + std::to_string( ofGetFrameRate() ), 10, 16 );
 
-       
+
         ofDrawCircle( ofPoint( 50, 70 ), 10 );
 
 
@@ -119,10 +109,10 @@ void Recorder::drawDebug()
         msg += "translation: " + translation + "\n";
         msg += "sentiment: " + sentimentAnalysis + "\n";
          */
-        string msg = ofToString(mScaledVol); 
+        string msg = ofToString( mScaledVol );
         font.drawString( msg, 500, ofGetHeight() - 200 );
         // ofDrawBitmapStringHighlight( msg, 10, ofGetHeight() - 200 );
-       
+
 
         ofSetColor( 0, 0, 0, 100 );
         ofFill();
@@ -173,7 +163,10 @@ void Recorder::start()
 
 void Recorder::stop()
 {
-    setAudioState( AudioRecordingStates::PREP_STOP );
+    // uncomment if using audio
+    //setAudioState( AudioRecordingStates::PREP_STOP );
+
+    setAudioState( AudioRecordingStates::STOP );
 }
 
 //--------------------------------------------------------------
@@ -203,7 +196,7 @@ void Recorder::audioIn( ofSoundBuffer &input )
     curVol /= (float)numCounted; // mean of rms
     curVol = sqrt( curVol );     // root of rms
 
-  //  mSmoothedVol = curVol; 
+    //  mSmoothedVol = curVol;
     mSmoothedVol *= 0.93;
     mSmoothedVol += 0.07 * curVol;
 
@@ -215,12 +208,14 @@ void Recorder::audioIn( ofSoundBuffer &input )
      }*/
 
     switch( mAudState ) {
-    case AudioRecordingStates::RECORDING: break;
+    case AudioRecordingStates::RECORDING:
+        break;
     case AudioRecordingStates::PREP_STOP: {
         setAudioState( AudioRecordingStates::STOP );
         break;
     }
-    default: break;
+    default:
+        break;
     }
 }
 
@@ -274,13 +269,13 @@ void Recorder::translateSpeechToText()
 void Recorder::performSentimentAnalysis()
 {
     ofLogNotice() << "PERFORM SENTIMENT ANALYSIS";
-    
+
     mVisitorSentimentPath = mRootPath + mVisitorPath + "\\sentiment.json";
     string path = ofSystem( "echo %path%" );
     string cmd = "set PATH=" + path;
     // ofLogNotice() << cmd;
     ofSystem( cmd );
-    cmd = mSentimentPath + " " + mApiKey + " \"" + translation + "\" " + mVisitorSentimentPath; 
+    cmd = mSentimentPath + " " + mApiKey + " \"" + translation + "\" " + mVisitorSentimentPath;
     ofLogNotice() << cmd;
     sentimentAnalysis = ofSystem( cmd );
     ofLogNotice() << "Sentiment Analysis Result: " << sentimentAnalysis;
