@@ -56,10 +56,10 @@ void PageManager::draw()
         page.drawText( "" );
         break;
     case Pages::PROCESSING:
-        page.drawText( "Stay with us, and watch your story animate across the textiles." ); 
+        page.drawText( "Stay with us, and watch your story animate across the textiles through a representation of color." ); 
         break;
     case Pages::ANIMATING:
-        page.drawText( "Stay with us, and watch your story animate across the textiles." ); 
+        page.drawText( "Stay with us, and watch your story animate across the textiles through a representation of color." ); 
         break;
     case Pages::CLOSE_OUT:
         page.drawText( "Thank you for sharing your story in this sonic textile." ); 
