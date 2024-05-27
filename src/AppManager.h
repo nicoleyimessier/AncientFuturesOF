@@ -54,7 +54,7 @@ class AppManager {
 
     // CLOSING TIMER
     float startTyTimer{ 0.0f };
-    float tyTimeDur{ 5.0f };
+    float tyTimeDur{ 8.0f };
 
     // osc
     OSCManager oscMan;

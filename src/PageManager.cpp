@@ -41,7 +41,7 @@ void PageManager::draw()
 
     switch( mPage ) {
     case Pages::IDLE: {
-        page.drawText( "We invite you to share a story using this telephone, in the same way ancient cultures wove their histories into cloth. Your narrative will be stored for the future, becoming part of our collective memory.\n\nPick up the telephone and press the button to start." ); 
+        page.drawText( "We invite you to share a story using this telephone, in the same way ancient cultures wove their histories into cloth, and see it preserved in this sonic textile. Your narrative will be stored for the future, becoming part of our collective memory.\n\nPick up the telephone and press the button to start." ); 
         //page.drawLang();
         break;
     }
