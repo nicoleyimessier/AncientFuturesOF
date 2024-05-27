@@ -318,13 +318,13 @@ void AppManager::setAppState( AppStates state )
 
         stopAllAudio();
         processing.play();
+
+        if( configs().one().getUseArduino() )
+            arduino.sendAnalyzing();
         break;
     }
     case AppStates::PROCESSING: {
         pMan.setPage( Pages::PROCESSING );
-
-        if( configs().one().getUseArduino() )
-            arduino.sendAnalyzing();
         break;
     }
     case AppStates::ANIMATING: {
