@@ -315,6 +315,7 @@ void AppManager::setAppState( AppStates state )
     case AppStates::END_RECORDING: {
         pMan.setPage( Pages::END_RECORDING );
         recorder.stop();
+        oscMan.sendString( "stopRecording" );
 
         stopAllAudio();
         processing.play();
@@ -322,7 +323,6 @@ void AppManager::setAppState( AppStates state )
     }
     case AppStates::PROCESSING: {
         pMan.setPage( Pages::PROCESSING );
-        oscMan.sendString( "stopRecording" );
 
         if( configs().one().getUseArduino() )
             arduino.sendAnalyzing();
