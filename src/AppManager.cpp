@@ -256,8 +256,11 @@ void AppManager::draw()
             arduino.drawDebug();
 
         recorder.drawDebug();
+
+        ofDrawBitmapString( "Smoothed Volume" + ofToString( recorder.getSmoothedVolume() ), ofGetWidth() / 2, ofGetHeight() / 2 );
     }
 
+    
     if( ledConfiguration ) {
         ofSetColor( 0 );
         ofDrawBitmapString( "TESTING LEDS: " + getStateString(), ofGetWidth() / 2, ofGetHeight() / 2 );

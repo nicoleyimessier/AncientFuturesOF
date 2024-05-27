@@ -74,8 +74,8 @@ class AppManager {
     int            numAmbientEmotions{ 200 };
     int            ambientIndex{ 0 };
     vector<string> paths;
-    bool           individualAmbient{ true };
-    void           updateAmbientState();
+    bool           individualAmbient{ false };
+     void           updateAmbientState();
 
     // LED ANIMATION SETUP
     bool          ledConfiguration{ false };

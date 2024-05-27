@@ -92,7 +92,7 @@ void Recorder::update()
 {
    // ofLogNotice() << "mSmoothedVol: " << mSmoothedVol;
 
-    mScaledVol = ofMap( mSmoothedVol, 0.0, 0.03, 0.1, 1.0, true );
+    mScaledVol = ofMap( mSmoothedVol, 0.0, 0.015, 0.1, 1.0, true );
 }
 
 void Recorder::draw( int x, int y, float width, float height )
@@ -113,12 +113,16 @@ void Recorder::drawDebug()
 
         ofSetColor( 255 );
 
+        /*
         // Draw the information
         string msg = "Press 'r' to start recording and 's' to stop recording.\n";
         msg += "translation: " + translation + "\n";
         msg += "sentiment: " + sentimentAnalysis + "\n";
+         */
+        string msg = ofToString(mScaledVol); 
         font.drawString( msg, 500, ofGetHeight() - 200 );
         // ofDrawBitmapStringHighlight( msg, 10, ofGetHeight() - 200 );
+       
 
         ofSetColor( 0, 0, 0, 100 );
         ofFill();
@@ -199,6 +203,7 @@ void Recorder::audioIn( ofSoundBuffer &input )
     curVol /= (float)numCounted; // mean of rms
     curVol = sqrt( curVol );     // root of rms
 
+  //  mSmoothedVol = curVol; 
     mSmoothedVol *= 0.93;
     mSmoothedVol += 0.07 * curVol;
 

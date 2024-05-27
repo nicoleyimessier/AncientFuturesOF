@@ -30,6 +30,7 @@ class Recorder {
     int                            getMappedVolume();
     float                          getNormalizedVolume();
     Recorder::AudioRecordingStates getState() { return mAudState; }
+    float                          getSmoothedVolume() { return mSmoothedVol; }
 
     //! setters
     void setAudioEnabled( bool enable ) { mAudio = enable; }
