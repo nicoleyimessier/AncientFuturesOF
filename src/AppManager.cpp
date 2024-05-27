@@ -12,6 +12,7 @@ AppManager::~AppManager()
 
 void AppManager::setup()
 {
+
     // set up ambient recordings
     string path = configs().one().getRootPath() + ofToDataPath( "recordings" );
     if( ofDirectory::doesDirectoryExist( path ) ) {
@@ -19,34 +20,32 @@ void AppManager::setup()
         // years
         ofDirectory recordingPath( path );
         recordingPath.listDir();
-        for( int i = 0; i < recordingPath.size(); i++ ) {
+        for( int i = recordingPath.size() - 1; i >= 0; i-- ) {
             if( ofDirectory::doesDirectoryExist( recordingPath.getPath( i ) ) ) {
                 // year
                 ofDirectory dirYear( recordingPath.getPath( i ) );
                 dirYear.listDir();
 
-
-                for( int j = 0; j < dirYear.size(); j++ ) {
+                for( int j = dirYear.size() - 1; j >= 0; j-- ) {
                     if( ofDirectory::doesDirectoryExist( dirYear.getPath( j ) ) ) {
                         // month
                         ofDirectory dirMonth( dirYear.getPath( j ) );
                         dirMonth.listDir();
 
-                        for( int k = 0; k < dirMonth.size(); k++ ) {
+                        for( int k = dirMonth.size() - 1; k >= 0; k-- ) {
                             if( ofDirectory::doesDirectoryExist( dirMonth.getPath( k ) ) ) {
                                 // day
                                 ofDirectory dirDay( dirMonth.getPath( k ) );
                                 dirDay.listDir();
 
-                                for( int l = 0; l < dirDay.size(); l++ ) {
+                                for( int l = dirDay.size() - 1; l >= 0; l-- ) {
                                     if( ofDirectory::doesDirectoryExist( dirDay.getPath( l ) ) ) {
                                         // individual
                                         ofDirectory individual( dirDay.getPath( l ) );
                                         individual.allowExt( "json" );
                                         individual.listDir();
 
-                                        for( int m = 0; m < individual.size(); m++ ) {
-
+                                        for( int m = individual.size() - 1; m >= 0; m-- ) {
                                             if( ofIsStringInString( individual.getPath( m ), "sentiment" )
                                                 && paths.size() <= numAmbientEmotions ) {
                                                 ofLogNotice( individual.getPath( m ) );
@@ -63,8 +62,9 @@ void AppManager::setup()
         }
     }
     else {
-        ofLogNotice() << path << " does not exists!";
+        ofLogNotice() << path << " does not exist!";
     }
+
 
     std::shuffle( std::begin( paths ), std::end( paths ), std::random_device{} );
 
