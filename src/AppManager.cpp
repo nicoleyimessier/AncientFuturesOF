@@ -331,9 +331,10 @@ void AppManager::setAppState( AppStates state )
 
         pMan.setPage( Pages::ANIMATING );
 
-        string txt = recorder.getSentimentPath() + ",g";
+        string txt = parseSentiment(recorder.getSentimentPath()) + ",g";
+
         if( configs().one().getUseArduino() )
-            arduino.sendSentimentMsg( parseSentiment( txt ) );
+            arduino.sendSentimentMsg( txt );
 
         startAnimationTime = ofGetElapsedTimef();
         break;
