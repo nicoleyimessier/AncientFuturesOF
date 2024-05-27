@@ -18,7 +18,7 @@ void ofApp::setup()
     ofSetVerticalSync( true );
     ofEnableSmoothing();
     ofSetCircleResolution( 80 );
-    ofBackground( configs().bgColor );
+    ofBackground( ofColor::black );
 
     app.setup();
 

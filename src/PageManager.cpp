@@ -36,33 +36,35 @@ void PageManager::update( float dt )
 void PageManager::draw()
 {
 
-    page.drawTemplate();
+    //page.drawTemplate();
+
 
     switch( mPage ) {
     case Pages::IDLE: {
-        //page.drawDescription();
-        page.drawPrompt();
-        page.drawLang();
+        page.drawText( "We invite you to share a story using this telephone, in the same way ancient cultures wove their histories into cloth. Your narrative will be stored for the future, becoming part of our collective memory.\n\nPick up the telephone and press the button to start." ); 
+        //page.drawLang();
         break;
     }
     case Pages::INTRO:
-        page.drawIntro();
+        page.drawText( "" ); 
+        //page.drawIntro();
         break;
     case Pages::LISTENING:
-        page.drawText( "Listening" ); 
+        page.drawText( "Recording in progress.\n\nPress the button to end the recording, and please stay on the telephone." ); 
         break;
     case Pages::END_RECORDING:
-        page.drawText( "END_RECORDING" );
+        page.drawText( "" );
         break;
     case Pages::PROCESSING:
-        page.drawText( "PROCESSING" ); 
+        page.drawText( "Stay with us, and watch your story animate across the textiles." ); 
         break;
     case Pages::ANIMATING:
-        page.drawText( "ANIMATING" ); 
+        page.drawText( "Stay with us, and watch your story animate across the textiles." ); 
         break;
     case Pages::CLOSE_OUT:
-        page.drawMessageStored();
-        page.drawDescription(); 
+        page.drawText( "Thank you for sharing your story in this sonic textile." ); 
+        //page.drawMessageStored();
+        //page.drawDescription(); 
         break;
     default:
         break;

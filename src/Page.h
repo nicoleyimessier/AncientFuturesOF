@@ -69,7 +69,7 @@ class Page {
     float mDescriptionTextSize{ 45 };
     float mPromptTextSize{ 50.0f };
     float mLangTextSize{ 20.0f };
-    float mColWidth{ 368.0f };
+    float mColWidth{ 668.0f };
     float mColWidthDescription{ 800.0f };
 
     ofImage bg;

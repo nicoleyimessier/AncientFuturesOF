@@ -139,20 +139,20 @@ void Page::drawIntro()
 
 void Page::drawText( string txt )
 {
-    int    numLines;
-    bool   wordsWereCropped;
+    int  numLines;
+    bool wordsWereCropped;
 
     ofSetColor( configs().textColor );
-    fonts().NunitoSansBold.drawMultiLineColumn( txt, // string
-        mTitleSize,                                  // size
-        countDownPos.x, countDownPos.y,              // position
-        mColWidth,                                   // column width
-        numLines,                                    // get back the number of lines
-        false,                                       // true would not draw, just get back the rectangle
-        55,                                          // max number of lines
-        true,                                        // get the final text formatting (by adding \n's) in the supplied string
-        &wordsWereCropped,                           // this is set to true if the box was too small to fit all of the text
-        true                                         // centered
+    fonts().NunitoSansBold.drawMultiLineColumn(  txt , // string
+        mPromptTextSize,                                     // size
+        promptPos.x, promptPos.y,                            // position
+        mColWidth,                                           // column width
+        numLines,                                            // get back the number of lines
+        false,                                               // true would not draw, just get back the rectangle
+        55,                                                  // max number of lines
+        true,                                                // get the final text formatting (by adding \n's) in the supplied string
+        &wordsWereCropped,                                   // this is set to true if the box was too small to fit all of the text
+        false                                                // centered
     );
 }
 

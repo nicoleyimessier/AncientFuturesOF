@@ -226,12 +226,9 @@ void AppManager::update( float dt )
     }
     case AppStates::STOPPING: {
 
-        /*float elapsed = ofGetElapsedTimef() - startTyTimer;
+        float elapsed = ofGetElapsedTimef() - startTyTimer;
         if( elapsed > tyTimeDur )
-            setAppState( AppStates::IDLE );*/
-
-        setAppState( AppStates::IDLE );
-
+            setAppState( AppStates::IDLE );
 
         break;
     }
@@ -246,9 +243,11 @@ void AppManager::draw()
     pMan.draw();
     TS_STOP( "pMan draw" );
 
+    /*
     TS_START( "recorder draw" );
     recorder.drawAudio( 1 );
     TS_STOP( "recorder draw" );
+    */
 
     if( configs().one().mAppDebug ) {
 
@@ -334,7 +333,7 @@ void AppManager::setAppState( AppStates state )
 
         pMan.setPage( Pages::ANIMATING );
 
-        string txt = parseSentiment(recorder.getSentimentPath()) + ",g";
+        string txt = parseSentiment(recorder.getSentimentPath()) + "g";
 
         if( configs().one().getUseArduino() )
             arduino.sendSentimentMsg( txt );
