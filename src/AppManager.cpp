@@ -183,7 +183,7 @@ void AppManager::update( float dt )
         */
 
         // if we are recording, send volume data to the arduino
-        arduino.sendVolumeData( recorder.getMappedVolume() );
+        //arduino.sendVolumeData( recorder.getMappedVolume() );
 
 
         break;
