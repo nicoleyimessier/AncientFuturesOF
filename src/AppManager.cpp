@@ -99,9 +99,9 @@ void AppManager::setup()
     gui.add( sendColorsBtn.setup( "Send Colors" ) );
 
     // setup audio
-    intro.load( "tracks\\intro.mp3" );
-    processing.load( "tracks\\processing.mp3" );
-    end.load( "tracks\\ending.mp3" );
+    intro.load( "tracks\\intro.wav" );
+    processing.load( "tracks\\processing.wav" );
+    end.load( "tracks\\ending.wav" );
 
     ofAddListener( ofEvents().keyPressed, this, &AppManager::onKeyPressed );
 }
