@@ -11,7 +11,6 @@ void ofApp::setup()
     // screen setup
     ofAddListener( ss.setupChanged, this, &ofApp::setupChanged );
     // ss.setup( ofGetWidth(), ofGetHeight(), ofxScreenSetup::FULL_ONE_MONITOR );
-    ss.setup( ofGetWidth(), ofGetHeight(), ofxScreenSetup::WINDOWED );
 
 
     ofSetFrameRate( 60 );
@@ -21,6 +20,9 @@ void ofApp::setup()
     ofBackground( ofColor::black );
 
     app.setup();
+
+    ofxScreenSetup::ScreenMode screen = static_cast<ofxScreenSetup::ScreenMode>( configs().one().getWindowMode()); 
+    ss.setup( ofGetWidth(), ofGetHeight(), screen );
 
     // enable the Windows Touch Hook
     ofxWinTouchHook::EnableTouch();

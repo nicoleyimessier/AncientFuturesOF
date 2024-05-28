@@ -32,6 +32,8 @@ class AppSettings final {
     string getAudioDevice() const { return mAudioDevice; }
     int    getRxPort() const { return mRxPort; }
     int    getTxPort() const { return mTxPort; }
+    int    getWindowMode() const { return mWindowMode;  }
+
 
     // --- COLORS --- //
     ofColor bgColor = ofColor( 117, 95, 134 );
