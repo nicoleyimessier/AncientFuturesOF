@@ -75,7 +75,8 @@ class AppManager {
     int            ambientIndex{ 0 };
     vector<string> paths;
     bool           individualAmbient{ false };
-     void           updateAmbientState();
+    void           updateAmbientState();
+    void           setupAmbientAnimations();
 
     // LED ANIMATION SETUP
     bool          ledConfiguration{ false };
@@ -99,5 +100,5 @@ class AppManager {
     ofSoundPlayer intro;
     ofSoundPlayer processing;
     ofSoundPlayer end;
-    void          stopAllAudio(); 
+    void          stopAllAudio();
 };

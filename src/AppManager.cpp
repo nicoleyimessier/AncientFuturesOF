@@ -10,9 +10,8 @@ AppManager::~AppManager()
 {
 }
 
-void AppManager::setup()
+void AppManager::setupAmbientAnimations()
 {
-
     // set up ambient recordings
     string path = configs().one().getRootPath() + ofToDataPath( "recordings" );
     if( ofDirectory::doesDirectoryExist( path ) ) {
@@ -51,6 +50,9 @@ void AppManager::setup()
                                                 ofLogNotice( individual.getPath( m ) );
                                                 paths.push_back( individual.getPath( m ) );
                                             }
+                                            else if( paths.size() >= numAmbientEmotions ) {
+                                                return; 
+                                            }
                                         }
                                     }
                                 }
@@ -64,6 +66,12 @@ void AppManager::setup()
     else {
         ofLogNotice() << path << " does not exist!";
     }
+}
+
+void AppManager::setup()
+{
+
+    setupAmbientAnimations(); 
 
 
     std::shuffle( std::begin( paths ), std::end( paths ), std::random_device{} );
