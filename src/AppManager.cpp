@@ -71,6 +71,9 @@ void AppManager::setupAmbientAnimations()
 void AppManager::setup()
 {
 
+    if( !configs().one().mUseMouse )
+        ofHideCursor(); 
+
     setupAmbientAnimations(); 
 
 
@@ -515,7 +518,7 @@ void AppManager::updateAmbientState()
     }
     else {
         if( configs().one().getUseArduino() )
-            arduino.sendSentimentMsg( "255,95,50,255,255,255" );
+            arduino.sendSentimentMsg( "255,95,50,255,255,255," );
     }
     startAmbientTime = ofGetElapsedTimef();
 }
@@ -614,6 +617,16 @@ void AppManager::onKeyPressed( ofKeyEventArgs &e )
         // ambient
         arduino.sendSentimentMsg( "255,95,50,255,255,255" );
         break;
+    case 'm': {
+
+        configs().one().mUseMouse = !configs().one().mUseMouse;
+
+        if( !configs().one().mUseMouse )
+            ofHideCursor();
+        else
+            ofShowCursor(); 
+        break;
+    }
     default:
         break;
     }

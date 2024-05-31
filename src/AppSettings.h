@@ -43,12 +43,12 @@ class AppSettings final {
 
     // --- Changable flags --- //
     bool mAppDebug{ false }; // global debug state for application
-
+    bool mUseMouse{ false };
   private:
     // --- FLAGS --- //
     bool      mTesting{ false };
     bool      mLogToFile{ true };
-    bool      mUseMouse{ true };
+
     bool      mUseArduino{ false };
     string    mArduinoPort{ "" };
     string    mAudioDevice{ "" };
