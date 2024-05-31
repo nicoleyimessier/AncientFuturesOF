@@ -37,7 +37,7 @@ void PageManager::draw()
 {
 
     //page.drawTemplate();
-
+    string stay = "Stay with us on the telephone, and watch your story animate across the textiles through a representation of color.";
 
     switch( mPage ) {
     case Pages::IDLE: {
@@ -53,14 +53,14 @@ void PageManager::draw()
         page.drawText( "Recording in progress.\n\nPress the button to end the recording, and please stay on the telephone." ); 
         break;
     case Pages::END_RECORDING:
-        page.drawText( "" );
+        page.drawText( stay );
         break;
     case Pages::PROCESSING:
-        page.drawText( "Stay with us, and watch your story animate across the textiles through a representation of color." ); 
+        page.drawText( stay ); 
         break;
     case Pages::ANIMATING:
-        page.drawText( "Stay with us, and watch your story animate across the textiles through a representation of color." ); 
-        break;
+        page.drawText( stay );
+        break; 
     case Pages::CLOSE_OUT:
         page.drawText( "Thank you for sharing your story in this sonic textile." ); 
         //page.drawMessageStored();
